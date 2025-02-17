@@ -1,18 +1,7 @@
 --[[
-    # Graphics
-    cls
+    # Graphics: palette
     pal
     palt
-    camera
-    map
-    spr
-    sspr
-    print
-    line
-    rectfill
-    rect
-    circ
-    circfill
     color
 ]]
 
@@ -52,35 +41,4 @@ function _init_graphics()
     end
 
     __current_color = 7
-end
-
-function cls(color)
-    print(__colors[__palette[color]][1], __colors[__palette[color]][2], __colors[__palette[color]][3])
-    love.graphics.clear(__colors[__palette[color]])
-end
-
-
-function circ(x, y, r, col)
-    r = r or 4
-    if col then
-        __current_color = col
-    else
-        col = __current_color
-    end
-
-    love.graphics.setColor(__colors[__palette[col]])
-    love.graphics.circle("line", x, y, r)
-end
-
-
-function circfill(x, y, r, col)
-    r = r or 4
-    if col then
-        __current_color = col
-    else
-        col = __current_color
-    end
-
-    love.graphics.setColor(__colors[__palette[col]])
-    love.graphics.circle("fill", x, y, r)
 end

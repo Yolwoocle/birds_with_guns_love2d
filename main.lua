@@ -1,6 +1,6 @@
+require "game.game"
 local pico8 = require "pico8"
 local test = require "pico8.test"
-require "game.game"
 
 function love.load()
     pico8.init()
@@ -12,4 +12,8 @@ end
 
 function love.draw()
     pico8.draw()
+end
+
+function love.keypressed(key, scancode, isrepeat)
+    pico8.keypressed(key, scancode, isrepeat)
 end

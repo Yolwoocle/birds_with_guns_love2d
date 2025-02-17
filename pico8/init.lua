@@ -1,7 +1,8 @@
 require "pico8.constants"
-require "pico8.graphics"
 require "pico8.string"
 require "pico8.math"
+require "pico8.palette"
+require "pico8.drawing"
 
 local pico8 = {}
 
@@ -11,6 +12,8 @@ local max_frame_buffer_duration = 1/15
 local canvas_width = 128
 local canvas_height = 128
 
+local screenshot_scale = 3
+
 function pico8.init()
     love.window.setMode(canvas_width, canvas_height, {
 		fullscreen = false,
@@ -19,15 +22,19 @@ function pico8.init()
 		minwidth = canvas_width,
 		minheight = canvas_height,
 	})
+    love.window.maximize()
     love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
 
     __width = canvas_width
     __height = canvas_height
 
-    __canvas = love.graphics.newCanvas(__width, __height, {format = "rgba8"})
+    __canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
+    __buffer_canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
     __accum_t = 0.0
     __accum_frame60 = 0
+
+    __font = love.graphics.newImageFont("pico8/pico8_font.png", FONT_SYMBOLS)
 
     _init_graphics()
     pico8._init()
@@ -86,6 +93,35 @@ function pico8.update_screen()
 
 	__canvas_ox = math.floor(max(0, (__window_width - canvas_width * __canvas_scale) / 2))
 	__canvas_oy = math.floor(max(0, (__window_height - canvas_height * __canvas_scale) / 2))
+end
+
+
+
+local function save_canvas_as_file(canvas, filename, encoding_format)
+	local imgdata = canvas:newImageData()
+	local imgpng = imgdata:encode("png", filename)
+
+	return imgdata, imgpng
+end
+
+function pico8.screenshot()
+    local filename = os.date('pico8_%Y-%m-%d_%H-%M-%S.png') 
+	
+	love.graphics.setCanvas(__buffer_canvas)
+	love.graphics.clear()
+	love.graphics.draw(__canvas, 0, 0, 0, screenshot_scale)
+	love.graphics.setCanvas()
+	
+	local imgdata, imgpng = save_canvas_as_file(__buffer_canvas, filename, "png")
+	local filepath = love.filesystem.getSaveDirectory().."/"..filename
+
+	return filename, filepath, imgdata, imgpng
+end
+
+function pico8.keypressed(key, scancode, isrepeat)
+    if key == "f1" then
+        pico8.screenshot()
+    end
 end
 
 -- CALLBACKS

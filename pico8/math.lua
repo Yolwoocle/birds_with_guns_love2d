@@ -68,7 +68,7 @@ function rnd(val)
     end
 end
 
-flr = math.flr
+flr = math.floor
 ceil = math.ceil
 abs = math.abs
 
