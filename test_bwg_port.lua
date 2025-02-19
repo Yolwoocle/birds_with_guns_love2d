@@ -1,4 +1,5 @@
 local pico8 = require "pico8"
+local bit = require "bit"
 
 -- pico-8 cartridge // http://www.pico-8.com
 -- version 42
@@ -98,7 +99,7 @@ function _update60()
 	mouse_x_y()
 	for i=0x3100,0x3148 do
 		--on
-		poke(i,peek(i)&0xBF)
+		poke(i,bit.band(peek(i),0xBF))
 	end
 	
 
@@ -1272,8 +1273,8 @@ function mouse_x_y()
 	mx=stat(32)+flr(camx)
 	my=stat(33)
 	local s = stat(34)
-	lmb=s&1 > 0
-	rmb=s&2 > 0
+	lmb=bit.band(s,1) > 0
+	rmb=bit.band(s,2) > 0
 end
 
 
@@ -1791,8 +1792,13 @@ function canshoot(e,pl)
  end	
 end
 
+local function sqr(x)
+	return x*x
+end
+
 function dist(e,p)
-	return sqrt(abs(p.y-e.y)^2+abs(p.x-e.x)^2)/8
+	-- return sqrt(abs(p.y-e.y)^2 + abs(p.x-e.x)^2)/8
+	return sqrt(sqr(abs(p.y-e.y)) + sqr(abs(p.x-e.x)))/8
 end
  
 function cansee(e,angle,x,y,dist)	 
@@ -2184,7 +2190,8 @@ function oxxl(t,x,y,col)
 		for iy=-2,4 do
 			if abs(ix)==2 
 			or abs(iy)>=2 then
-				print("\^p"..t,x+ix,y+iy,1)
+				-- print("\^p"..t,x+ix,y+iy,1) -- FIXME
+				print("p"..t,x+ix,y+iy,1)
 			end
 		end
 	end
@@ -2192,7 +2199,8 @@ function oxxl(t,x,y,col)
 	col=col or 7 
 	for ix=-1,1 do
 		for iy=-1,1 do
-			print("\^p"..t,
+			-- print("\^p"..t, -- FIXME
+			print("p"..t,
 			x+ix,y+iy,col)
 		end
 	end

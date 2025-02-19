@@ -1,8 +1,8 @@
 --[[
     # Graphics: palette
-    pal
-    palt
-    color
+    [] pal
+    [] palt
+    [x] color
 ]]
 
 function _init_graphics()
@@ -41,4 +41,41 @@ function _init_graphics()
     end
 
     __current_color = 7
+
+    __palette_swap = [[
+        extern vec3 palette[32];
+        extern int palSwaps[32];
+
+        // calculate how "similar" two colours are
+        // currently just does this by snapping rgb values- would like to eventually swap this to hsv or some equiv.
+        float deltaE(vec3 colA, vec3 colB) {
+            return sqrt(pow(colA.r-colB.r,2)+pow(colA.g-colB.g,2)+pow(colA.b-colB.b,2));
+        }
+        
+        vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+            vec4 pixel = Texel(texture, texture_coords);
+
+            float thresh = 0.05;        // how close the colour has to be , could probably be arbitrarily small -ish
+            for(int i=0; i<32; i++){
+                if (palSwaps[i]!=i && deltaE( pixel.rgb, palette[i] )<thresh) {
+                    return vec4(palette[ palSwaps[i] ].rgb, color.a);
+                }
+            }
+
+            return pixel * color;
+        }
+    ]]
+end
+
+
+function pal(...)
+    -- TODO
+end
+
+function palt(...)
+    -- TODO
+end
+
+function color(n)
+    __current_color = n
 end

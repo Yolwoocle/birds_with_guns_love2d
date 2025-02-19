@@ -131,3 +131,11 @@ end
 function tostr(val, format_flags)
     return tostring(val)
 end
+
+-- NOT IMPLEMENTED: format_flags
+function tonum(val, format_flags)
+    if type(val) == "boolean" then
+        return val and 1 or 0
+    end
+    return tonumber(val)
+end

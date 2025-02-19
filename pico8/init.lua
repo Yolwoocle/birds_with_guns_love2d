@@ -1,8 +1,13 @@
 require "pico8.constants"
 require "pico8.string"
 require "pico8.math"
+require "pico8.meta"
 require "pico8.palette"
 require "pico8.drawing"
+require "pico8.input"
+require "pico8.memory"
+require "pico8.table"
+require "pico8.audio"
 
 local pico8 = {}
 
@@ -34,7 +39,24 @@ function pico8.init()
     __accum_t = 0.0
     __accum_frame60 = 0
 
-    __font = love.graphics.newImageFont("pico8/pico8_font.png", FONT_SYMBOLS)
+    __buffer_mouse_wheel_state = 0
+    __mouse_wheel_state = 0
+
+    __camera_x = 0
+    __camera_y = 0
+
+    __font = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_SYMBOLS)
+    __spritesheet = love.graphics.newImage("pico8/assets/spritesheet.png")
+
+    __input_state = {}
+    for btn_id, _ in pairs(BTN_MAP) do
+        __input_state[btn_id] = 0
+    end
+    for ip = 0, MAX_PLAYERS-1 do
+        for ib = 0, BTN_COUNT-1 do
+            __input_state[ip*BTN_COUNT + ib] = 0
+        end
+    end
 
     _init_graphics()
     pico8._init()
@@ -45,6 +67,8 @@ function pico8.update(dt)
 	local update_fixed_dt = fixed_dt
 	if (__accum_t > update_fixed_dt) then
 		__accum_t = __accum_t - update_fixed_dt
+
+        pico8._run_frame(__accum_frame60 % 2 == 0)
 		pico8._update60()
         if __accum_frame60 % 2 == 0 then
             pico8._update()
@@ -52,11 +76,13 @@ function pico8.update(dt)
         __accum_frame60 = __accum_frame60 + 1
 	end
 
-    pico8.update_screen()
+    pico8._update_screen()
 end
 
 function pico8.draw()
     love.graphics.setCanvas(__canvas)
+    love.graphics.origin()
+    love.graphics.translate(-__camera_x, -__camera_y)
     pico8._draw()
     love.graphics.setCanvas()
     
@@ -68,7 +94,59 @@ end
 
 -- Utils 
 
-function pico8.update_screen()
+function pico8.wheelmoved(x, y)
+    __buffer_mouse_wheel_state = mid(round(y), 1, -1)
+end
+
+function pico8._run_frame(is_30fps_frame)
+    if is_30fps_frame then
+        __mouse_wheel_state = __buffer_mouse_wheel_state
+        pico8._update_input_state()
+    end
+end
+
+function pico8._is_btn_down(btn_id)
+    local keys = BTN_MAP[btn_id]
+    if not keys then
+        return false
+    end
+
+    for _, key in pairs(keys) do
+        if love.keyboard.isScancodeDown(key) then
+            return true
+        end
+    end
+    return false
+end
+
+function pico8._update_input_state()
+    for btn_id, _ in pairs(BTN_MAP) do
+        local pressed = pico8._is_btn_down(btn_id)
+        local old_state = __input_state[btn_id]
+        if old_state ~= nil then
+            if pressed then
+                if old_state == INPUT_STATE_OFF or old_state == INPUT_STATE_RELEASING then
+                    __input_state[btn_id] = INPUT_STATE_PRESSING
+
+                elseif old_state == INPUT_STATE_PRESSING then
+                    __input_state[btn_id] = INPUT_STATE_ON
+
+                end
+            else
+                if old_state == INPUT_STATE_RELEASING then
+                    __input_state[btn_id] = INPUT_STATE_OFF
+
+                elseif old_state == INPUT_STATE_ON or old_state == INPUT_STATE_PRESSING then
+                    __input_state[btn_id] = INPUT_STATE_RELEASING
+
+                end
+
+            end
+        end
+    end
+end
+
+function pico8._update_screen()
 	__window_width, __window_height = love.graphics.getDimensions()
 
 	local pixel_scale_mode = "max_whole"--Options:get("pixel_scale")
@@ -143,8 +221,8 @@ return pico8
 --[[
     # Engine
     [ ] run
-    [ ] time
-    [ ] t (== time)
+    [x] time
+    [x] t (== time)
     [ ] menuitem
     [ ] printh
     [ ] _init
@@ -156,16 +234,16 @@ return pico8
     [ ] pal
     [ ] palt
     [ ] camera
-    [ ] cls
+    [x] cls
     [ ] map
-    [ ] spr
-    [ ] print
-    [ ] line
-    [ ] rectfill
-    [ ] rect
-    [ ] circ
-    [ ] circfill
-    [ ] color
+    [x] spr
+    [x] print
+    [x] line
+    [x] rectfill
+    [x] rect
+    [x] circ
+    [x] circfill
+    [x] color
 
     # Memory
     [ ] poke
@@ -188,7 +266,7 @@ return pico8
     [x] sub
     [x] split
     [x] tostr
-    [ ] tonum
+    [x] tonum
 
     # Math
     [x] min 

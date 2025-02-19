@@ -72,6 +72,12 @@ flr = math.floor
 ceil = math.ceil
 abs = math.abs
 
+function round(num, num_dec)
+	-- http://lua-users.org/wiki/SimpleRound
+	local mult = 10 ^ (num_dec or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
 function sqrt(val)
     return math.sqrt(math.max(0.0, val))
 end

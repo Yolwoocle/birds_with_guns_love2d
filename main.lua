@@ -17,3 +17,7 @@ end
 function love.keypressed(key, scancode, isrepeat)
     pico8.keypressed(key, scancode, isrepeat)
 end
+
+function love.wheelmoved(x, y)
+    pico8.wheelmoved(x, y)
+end
