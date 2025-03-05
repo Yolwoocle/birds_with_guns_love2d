@@ -1,6 +1,10 @@
+require "lib.error_explorer" {
+	source_font = love.graphics.newFont("fonts/FiraCode-Regular.ttf", 12)
+}
 require "game.game"
 local pico8 = require "pico8"
 local test = require "pico8.test"
+
 
 function love.load()
     pico8.init()

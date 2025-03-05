@@ -70,7 +70,14 @@ end
 
 flr = math.floor
 ceil = math.ceil
-abs = math.abs
+function abs(x)
+    if type(x) == "string" then
+        return math.abs(tonum(x))
+    elseif type(x) ~= "number" then
+        return 0
+    end
+    return math.abs(x)
+end
 
 function round(num, num_dec)
 	-- http://lua-users.org/wiki/SimpleRound

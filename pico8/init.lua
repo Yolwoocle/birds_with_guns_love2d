@@ -3,10 +3,12 @@ require "pico8.string"
 require "pico8.math"
 require "pico8.meta"
 require "pico8.palette"
+require "pico8.sprite"
 require "pico8.drawing"
 require "pico8.input"
 require "pico8.memory"
 require "pico8.table"
+require "pico8.map"
 require "pico8.audio"
 
 local pico8 = {}
@@ -31,6 +33,8 @@ function pico8.init()
     love.graphics.setDefaultFilter("nearest", "nearest")
 	love.graphics.setLineStyle("rough")
 
+    __debug_info = false
+
     __width = canvas_width
     __height = canvas_height
 
@@ -45,8 +49,7 @@ function pico8.init()
     __camera_x = 0
     __camera_y = 0
 
-    __font = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_SYMBOLS)
-    __spritesheet = love.graphics.newImage("pico8/assets/spritesheet.png")
+    __font = love.graphics.newImageFont("game/assets/pico8_font.png", FONT_SYMBOLS)
 
     __input_state = {}
     for btn_id, _ in pairs(BTN_MAP) do
@@ -59,6 +62,9 @@ function pico8.init()
     end
 
     _init_graphics()
+    _load_sprite_flags()
+    _init_map()
+
     pico8._init()
 end
 
@@ -81,15 +87,29 @@ end
 
 function pico8.draw()
     love.graphics.setCanvas(__canvas)
+    love.graphics.setShader(__shader_pico8_draw)
     love.graphics.origin()
     love.graphics.translate(-__camera_x, -__camera_y)
     pico8._draw()
+    pico8._draw_debug()    
     love.graphics.setCanvas()
     
     love.graphics.origin()
 	love.graphics.scale(1, 1)
-    love.graphics.setColor(1, 1, 1, 1)
+    local old_color = {love.graphics.getColor()}
+    love.graphics.setColor(1, 1, 1, 1) 
+    love.graphics.setShader(__shader_index_to_color)
 	love.graphics.draw(__canvas, __canvas_ox, __canvas_oy, 0, __canvas_scale, __canvas_scale)
+    love.graphics.setShader()
+    love.graphics.setColor(old_color) 
+end
+
+function pico8._draw_debug()
+    love.graphics.origin()
+    if __debug_info then
+        rectfill(0, 0, 32, 16, 0)
+        print(tostring(love.timer.getFPS()).."FPS", 0, 0, 7)
+    end 
 end
 
 -- Utils 
@@ -99,10 +119,10 @@ function pico8.wheelmoved(x, y)
 end
 
 function pico8._run_frame(is_30fps_frame)
-    if is_30fps_frame then
-        __mouse_wheel_state = __buffer_mouse_wheel_state
-        pico8._update_input_state()
-    end
+    __mouse_wheel_state = __buffer_mouse_wheel_state
+    __buffer_mouse_wheel_state = 0
+    
+    pico8._update_input_state()
 end
 
 function pico8._is_btn_down(btn_id)
@@ -199,6 +219,8 @@ end
 function pico8.keypressed(key, scancode, isrepeat)
     if key == "f1" then
         pico8.screenshot()
+    elseif key == "f3" then
+        __debug_info = not __debug_info
     end
 end
 

@@ -132,9 +132,19 @@ function test.math()
     assert_approxeq(sin(1)    , 0)
 end
 
+function test.table()
+    local table = {1, 2, 3, 4, 5}
+    local s = 0
+    for x in all(table) do
+        s = s + x
+    end
+    assert_eq(s, 15)
+end
+
 function test.test()
     test.string()
-    test.math()
+    test.table()
+    test.table()
     print("Tests OK.")
 end
 

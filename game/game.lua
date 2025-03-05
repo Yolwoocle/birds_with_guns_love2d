@@ -1,5 +1,6 @@
 local pico8 = require "pico8"
 local bit = require "bit"
+require "util"
 
 -- pico-8 cartridge // http://www.pico-8.com
 -- version 42
@@ -19,9 +20,10 @@ local bit = require "bit"
 -- (nested comments no longer
 -- supported)
 
-degaplus = 0
+VERSION = "1.0"
 
 function pico8._init()
+	degaplus = 0
 	keyboard = false
 	initguns()
 	enemies,checker = {},{}
@@ -207,7 +209,7 @@ function pico8._draw()
          weapon
         ]]
         end
-		print(s,33,42,2)
+		print_(s,33,42,2)
 	end
 
 	draw_weel()
@@ -238,7 +240,7 @@ function pico8._draw()
 	--draw mouse
 	
 	if(not keyboard or menu=="game")then spr(sprms,mx-1,my-1) end
-	pal(1,129,1)
+	-- pal(1,129,1) -- REMOVED for LÖVE port (replaced blue in palette)
 end
 
 ----------
@@ -301,12 +303,12 @@ function oprint(t,x,y,col,ocol)
 	local ocol = ocol or 1
 	for i=-1,1 do
 		for j=-1,1 do
-			print(t,x+i,y+j,ocol)
+			print_(t,x+i,y+j,ocol)
 		end
 	end
 	
 	local col = col or 7
-	print(t,x,y,col)
+	print_(t,x,y,col)
 end
 
 function copy(t)
@@ -549,7 +551,7 @@ function player_update()
 		--shooting
 		if stat(36) ==1 or stat(36) ==-1 or (btnp(BTN_O)) then
 			nextgun(p)
-			--print(p.gun.cooldown,0,0)
+			--print_(p.gun.cooldown,0,0)
 			p.gun.timer = p.gun.cooldown/2
 		end
 		
@@ -688,7 +690,7 @@ function draw_player_ui(p)
 	rectfill(camx+2,2,camx+2+l,6,8)
 	
 	local s="♥"..p.life.."/"..p.maxlife.." "
-	print(s, camx+2,2,7)
+	print_(s, camx+2,2,7)
 	
 	--ammo bar
 	rectfill(camx+84,1,camx+84+42,7,4)
@@ -698,7 +700,7 @@ function draw_player_ui(p)
 	local s,col = tostr(p.gun.ammo),7
 	if(s=="0") then s,col="no ammo!",14 end
 	spr(110,camx+89,2)
-	print(s, camx+95,2,col)
+	print_(s, camx+95,2,col)
 	
 	--weapon list
 	for i=1,2 do
@@ -717,7 +719,7 @@ function draw_player_ui(p)
 	end
 	oprint("wagon "..wagon_n+1 .."/7",
 	camx+46,2,color,1)
-	--print(test,0,80)
+	--print_(test,0,80)
 end
 
 function nextgun(p)
@@ -1737,13 +1739,13 @@ function draw_enemy(e)
 		125,9)
 		
 		local s="🐱"..ceil(e.life).."/".."300"
-		print(s, camx+3,121,7)
+		print_(s, camx+3,121,7)
 	end
 	
-	--print(e.life, e.x,e.y-8,7)
+	--print_(e.life, e.x,e.y-8,7)
 	--circ(e.x+4,e.y+4,e.r,12)
-	--print(e.gun.timer,e.x,e.y)
-	--print(abs(e.dy)+abs(e.dx),e.x,e.y+6)
+	--print_(e.gun.timer,e.x,e.y)
+	--print_(abs(e.dy)+abs(e.dx),e.x,e.y+6)
 end
 
 function update_boss(i)
@@ -1876,7 +1878,7 @@ function draw_ptc(ptc)
 	if ptc.txt==nil then
 		circfill(ptc.x,ptc.y,ptc.r,ptc.col)
 	else
-		print(ptc.txt,ptc.x,ptc.y,ptc.col)
+		print_(ptc.txt,ptc.x,ptc.y,ptc.col)
 	end
 end
 
@@ -1935,7 +1937,7 @@ function draw_bar(t,x,y,w,w2,c,c2)
 	rectfill(x+1,y+1,
 	x+1+l,y+5,c)
 	
-	print(t, x+1,y+1,7)
+	print_(t, x+1,y+1,7)
 end--]]
 
 function make_boss_death()
@@ -2011,6 +2013,8 @@ function make_main_menu()
 		  y=105,
 		  w=9,
 		  h=17,
+
+		  oy=0, -- LOVE2D: added because otherwise it'd crash. no idea why it doesn't do this in the original
 		  col=1,
 		  sh=2,
 		  
@@ -2146,14 +2150,8 @@ function draw_main_menu(m)
 		
 		if i.n==13 and i.active then
 			oprint("a game by:",2,13, 14)
-			oprint([[yOLWOOCLE
-gOUSPOURD
-nOTGOYOME
-sIMON t.]],2,13)
-			oprint([[code,art
-code
-code
-music]],45,13, 13)
+			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nv"..VERSION,2,13)
+			oprint("\n\ncode,art\ncode\ncode\nmusic",45,13, 13)
 		end
 	end
 	oy=abs(oy)
@@ -2190,8 +2188,8 @@ function oxxl(t,x,y,col)
 		for iy=-2,4 do
 			if abs(ix)==2 
 			or abs(iy)>=2 then
-				-- print("\^p"..t,x+ix,y+iy,1) -- FIXME
-				print("p"..t,x+ix,y+iy,1)
+				-- print_("\^p"..t,x+ix,y+iy,1) -- FIXME
+				print_("p"..t,x+ix,y+iy,1)
 			end
 		end
 	end
@@ -2199,8 +2197,8 @@ function oxxl(t,x,y,col)
 	col=col or 7 
 	for ix=-1,1 do
 		for iy=-1,1 do
-			-- print("\^p"..t, -- FIXME
-			print("p"..t,
+			-- print_("\^p"..t, -- FIXME
+			print_("p"..t,
 			x+ix,y+iy,col)
 		end
 	end
@@ -2221,8 +2219,8 @@ function wide(t,x,y,col,pre)
 	end
 	
 	if(col~=nil)then color(col) end
-	print(pre..n1,x,y)
-	print(pre..n2,x+1,y)
+	print_(pre..n1,x,y)
+	print_(pre..n2,x+1,y)
 end
 
 
