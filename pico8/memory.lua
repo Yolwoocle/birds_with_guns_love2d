@@ -26,7 +26,7 @@ local function _get_mouse_pos()
     local mx, my = love.mouse.getPosition()
     mx = (mx - __canvas_ox) / __canvas_scale
     my = (my - __canvas_oy) / __canvas_scale
-    return math.ceil(mx), math.ceil(my)
+    return math.floor(mx), math.floor(my)
 end
 
 function stat(n)

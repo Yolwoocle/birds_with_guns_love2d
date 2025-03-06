@@ -210,7 +210,7 @@ function _draw()
 		print(s,33,42,2)
 	end
 
-	draw_weel()
+	draw_wheel()
 	
 	draw_drops()
 	
@@ -1904,7 +1904,7 @@ function drawgrass()
 	end
 end
 
-function draw_weel()
+function draw_wheel()
  weelcount = weelcount - 1
  if (weelcount<1)then  weelflip = not weelflip weelcount=weelframe end
  for n=0,5 do
