@@ -2194,10 +2194,8 @@ function oxxl(t, x, y, col)
 	--credit to freds72
 	for ix = -2, 2 do
 		for iy = -2, 4 do
-			if abs(ix) == 2
-				or abs(iy) >= 2 then
-				-- print_("\^p"..t,x+ix,y+iy,1) -- FIXME
-				print_("p" .. t, x + ix, y + iy, 1)
+			if abs(ix) == 2 or abs(iy) >= 2 then
+				print_pinball(t, x + ix, y + iy, 1)
 			end
 		end
 	end
@@ -2205,8 +2203,7 @@ function oxxl(t, x, y, col)
 	col = col or 7
 	for ix = -1, 1 do
 		for iy = -1, 1 do
-			-- print_("\^p"..t, -- FIXME
-			print_("p" .. t,
+			print_pinball(t,
 				x + ix, y + iy, col)
 		end
 	end

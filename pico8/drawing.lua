@@ -133,3 +133,12 @@ function print_(_str, _x, _y, col)
     love.graphics.print(_str, flr(x0), flr(y0))
     __shader_pico8_draw:send("transparencyEnabled", true)
 end
+
+function print_pinball(_str, _x, _y, col)
+    local old_font = __font
+    __font = __font_pinball
+
+    print_(_str, _x, _y, col)
+
+    __font = old_font
+end

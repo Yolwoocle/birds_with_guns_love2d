@@ -49,7 +49,31 @@ function pico8.init()
     __camera_x = 0
     __camera_y = 0
 
-    __font = love.graphics.newImageFont("game/assets/pico8_font.png", FONT_SYMBOLS)
+    __font_normal = love.graphics.newImageFont("game/assets/pico8_font.png", FONT_SYMBOLS)
+
+    ---[[[[]]]]
+    local img = love.graphics.newImage("game/assets/pico8_font.png")
+    local img_data = love.graphics.readbackTexture(img)
+    local img_pinball = love.graphics.newCanvas(img:getWidth()*2, img:getHeight()*2, {dpiscale = 1})
+    love.graphics.setCanvas(img_pinball)
+    
+    for ix=0, img:getWidth()-1 do
+        for iy=0, img:getHeight()-1 do
+            local pixel = {img_data:getPixel(ix, iy)}
+            love.graphics.setColor(pixel)
+            if iy == 0 and (pixel[1] > 0.8) and (pixel[2] == 0) and (pixel[3] == 0) then
+                love.graphics.rectangle("fill", ix*2, 0, 2, img:getHeight()*2)
+            else
+                love.graphics.rectangle("fill", ix*2, iy*2, 1, 1)
+            end
+        end
+    end
+    love.graphics.setCanvas()
+    _save_canvas_as_file(img_pinball, "testtest.png")
+
+    __font_pinball = love.graphics.newImageFont(love.graphics.readbackTexture(img_pinball), FONT_SYMBOLS)
+    ---[[[[]]]]
+    __font = __font_normal
 
     __input_state = {}
     for btn_id, _ in pairs(BTN_MAP) do
@@ -195,8 +219,8 @@ end
 
 
 
-local function save_canvas_as_file(canvas, filename, encoding_format)
-	local imgdata = canvas:newImageData()
+function _save_canvas_as_file(canvas, filename)
+	local imgdata = love.graphics.readbackTexture(canvas)
 	local imgpng = imgdata:encode("png", filename)
 
 	return imgdata, imgpng
@@ -210,7 +234,7 @@ function pico8.screenshot()
 	love.graphics.draw(__canvas, 0, 0, 0, screenshot_scale)
 	love.graphics.setCanvas()
 	
-	local imgdata, imgpng = save_canvas_as_file(__buffer_canvas, filename, "png")
+	local imgdata, imgpng = save_canvas_as_file(__buffer_canvas, filename)
 	local filepath = love.filesystem.getSaveDirectory().."/"..filename
 
 	return filename, filepath, imgdata, imgpng
