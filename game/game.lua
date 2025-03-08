@@ -2137,6 +2137,20 @@ function draw_main_menu(m)
 
 	draw_logo(44, 5 - oy)
 
+	-- buttons
+	local sel = m.buttons[m.sel]
+	rectfill(
+		2, 93 + oy,
+		2 + #sel.name * 8, 102 + oy, 1)
+	wide(sel.name, 4, 95 + oy, 7)
+	palt()
+
+	-- encaged bird
+	palt(1, true)
+	spr(sel.bird, 6 * 8, 7 * 8)
+	spr(32, 6 * 8, 7 * 8)
+	palt()
+
 	--player selection
 	rectfill(112, 89 + oy, 125, 110 + oy, 12)
 	rectfill(2, 103 + oy, 125, 124 + oy, 1)
@@ -2157,26 +2171,14 @@ function draw_main_menu(m)
 			1, i.sh)
 
 		if i.n == 13 and i.active then
-			oprint("a game by:", 2, 13, 14)
-			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nv" .. VERSION, 2, 13)
-			oprint("\n\ncode,art\ncode\ncode\nmusic", 45, 13, 13)
+			rectfill(2, 12, 82, 58, 12)
+			rect(    2, 12, 82, 58, 7)
+			oprint("a game by:", 6, 15, 14)
+			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 15)
+			oprint("\n\ncode,art\ncode\ncode\nmusic", 47, 15, 13)
 		end
 	end
 	oy = abs(oy)
-
-	-- buttons
-	local sel = m.buttons[m.sel]
-	rectfill(
-		2, 93 + oy,
-		2 + #sel.name * 8, 102 + oy, 1)
-	wide(sel.name, 4, 95 + oy, 7)
-	palt()
-
-	-- encaged bird
-	palt(1, true)
-	spr(sel.bird, 6 * 8, 7 * 8)
-	spr(32, 6 * 8, 7 * 8)
-	palt()
 end
 
 function draw_logo(x, y)
@@ -2186,8 +2188,10 @@ function draw_logo(x, y)
 
 	--"with"
 	oprint("with", x + 11, y + 10)
-
 	oprint("with", x + 11, y + 9)
+	
+	oprint("deluxe", x + 7, y + 28, 14, 2)
+	oprint("deluxe", x + 7, y + 27, 14, 2)
 end
 
 function oxxl(t, x, y, col)
