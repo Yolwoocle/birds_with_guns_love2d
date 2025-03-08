@@ -160,8 +160,8 @@ function pal(a, b, flag)
 
     elseif type(a) == "table" then
         -- replace entire target palette
-        for i = 0, 15 do
-            pal(i, a[i+1])
+        for k, v in pairs(a) do
+            pal((k % 16), v)
         end
     elseif type(a) == "number" and type(b) == "number" then
         -- replace single color

@@ -6,8 +6,9 @@
     [ ] printh
 ]]
 
-function run(...)
-    -- TODO
+function run(breadcrumb)
+    __breadcrumb = breadcrumb
+    __init()
 end
 
 function time(...)

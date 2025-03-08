@@ -42,7 +42,7 @@ function stat(n)
             If the load() call also included a breadcrumb string, the loaded cart can 
             access this with stat(100). 
         ]]
-        return nil
+        return __breadcrumb
 
     elseif n == 32 then
         local mx, my = _get_mouse_pos()

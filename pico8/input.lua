@@ -6,7 +6,6 @@ local bit = require "bit"
     btnp
 ]]
 
-
 -- Not implemented: Undocumented buttons (see https://pico-8.fandom.com/wiki/Btn)
 function btn(btn_id, player)
     -- TODO: bitfield if called with no args (https://pico-8.fandom.com/wiki/Btn) + the rest

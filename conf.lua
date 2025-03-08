@@ -1,4 +1,4 @@
 function love.conf(t)
-    t.window.highdpi = false
-    t.window.usedpiscale = false
+    t.highdpi = false
+    t.usedpiscale = false
 end
