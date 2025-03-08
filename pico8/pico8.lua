@@ -51,7 +51,7 @@ function pico8.init()
 
     __font_normal = love.graphics.newImageFont("game/assets/pico8_font.png", FONT_SYMBOLS)
 
-    ---[[[[]]]]
+    ---[[[[pinball font]]]]
     local img = love.graphics.newImage("game/assets/pico8_font.png")
     local img_data = love.graphics.readbackTexture(img)
     local img_pinball = love.graphics.newCanvas(img:getWidth()*2, img:getHeight()*2, {dpiscale = 1})
@@ -87,6 +87,7 @@ function pico8.init()
     _init_graphics()
     _load_sprite_flags()
     _init_map()
+    _init_audio()
 
     pico8._init()
 end
