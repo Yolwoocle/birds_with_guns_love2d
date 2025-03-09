@@ -4,11 +4,18 @@
 ]]
 
 function _init_audio()
+    if __music then
+        music(-1)
+    end
+    if __sounds then
+        for k, v in pairs(__sounds) do
+            __sounds[k]:stop()
+        end
+    end
+
     __sounds = {}
-    __playing_sources = {}
     for i=0, 63 do
         __sounds[i] = love.audio.newSource("game/assets/sfx/sfx_"..tostring(i)..".wav", "static")
-        __playing_sources[i] = false
     end
     
     __music = {}

@@ -2150,8 +2150,9 @@ function draw_main_menu(m)
 	spr(sel.bird, 6 * 8, 7 * 8)
 	spr(32, 6 * 8, 7 * 8)
 	palt()
-
+	
 	--player selection
+	palt(0, false)
 	rectfill(112, 89 + oy, 125, 110 + oy, 12)
 	rectfill(2, 103 + oy, 125, 124 + oy, 1)
 	for k = 0, #m.buttons do
@@ -2178,6 +2179,7 @@ function draw_main_menu(m)
 			oprint("\n\ncode,art\ncode\ncode\nmusic", 47, 15, 13)
 		end
 	end
+	palt()
 	oy = abs(oy)
 end
 
