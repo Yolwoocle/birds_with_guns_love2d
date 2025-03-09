@@ -28,11 +28,17 @@ function _init_audio()
     end
 
     __current_music = nil
+
+    __sfxeffects = {}
+    sfxeffect("lowpass", false)
 end
 
 -- NOT IMPLEMENTED: fadems, channelmask
 function music(n, fadems, channelmask)
     n = n or 0
+    if __current_music then
+        sfxeffect("lowpass", false)
+    end
     if n == -1 and __current_music then
         __current_music:stop()
     end
@@ -43,6 +49,8 @@ function music(n, fadems, channelmask)
     end
     __current_music = source
     __current_music:play()
+
+    sfxeffect("lowpass", __sfxeffects["lowpass"])
 end
 
 -- NOT IMPLEMENTED: [channel,] [offset,] [length]
@@ -55,4 +63,19 @@ function sfx(n, channel, offset, length)
         sound:stop()
     end
 	sound:play()
+end
+
+function sfxeffect(effectname, value)
+    __sfxeffects[effectname] = value
+
+    if effectname == "lowpass" and __current_music then
+        if value then
+            __current_music:setFilter({
+                type = "lowpass",
+                highgain = value,
+            })
+        else
+            __current_music:setFilter()
+        end
+    end
 end

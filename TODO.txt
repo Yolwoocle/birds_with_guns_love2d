@@ -1,6 +1,5 @@
 Needed
 - audio sounds watered down
-- music should reset when restarting game
 - apply low-pass filter to audio between wagons
 - pause menu, options menu 
 - control remapping
@@ -10,3 +9,6 @@ Nice to have
 - localization (french, japanese?, chinese?)
 - local co-op
 - online co-op?
+
+Done
+- music should reset when restarting game

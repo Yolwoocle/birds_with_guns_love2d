@@ -323,8 +323,8 @@ function update_camera()
 	local wl = wl
 	local maxlen = 240
 
-	--poke(0x5f40,0)
-	poke(0x5f43, 0)
+	poke(0x5f40, nil)
+	sfxeffect("lowpass", false)
 	if px > 128 * (wl - 1) + 8 then
 		--pan cam to connector room
 		cam_follow_player = false
@@ -338,7 +338,8 @@ function update_camera()
 
 		--low-pass filter & slow
 		--poke(0x5f40,15)
-		if (wagon_n ~= tl) then poke(0x5f43, 15) end
+		-- if (wagon_n ~= tl) then poke(0x5f43, 15) end
+		if (wagon_n ~= tl) then sfxeffect("lowpass", 0.1) end
 	end
 	if cam_follow_player then
 		--camera follows player
