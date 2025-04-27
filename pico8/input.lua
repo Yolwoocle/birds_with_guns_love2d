@@ -27,7 +27,7 @@ function btn(btn_id, player)
     end
 
     player = player or 0 
-    if btn_id < 0 or btn_id >= BTN_COUNT or player < 0 or player >= MAX_PLAYERS then
+    if (btn_id ~= BTN_PAUSE) and (btn_id < 0 or btn_id >= BTN_COUNT or player < 0 or player >= MAX_PLAYERS) then
         return false
     end
     local state = __input_state[player*BTN_COUNT + btn_id]
@@ -53,7 +53,7 @@ function btnp(btn_id, player)
     end
 
     player = player or 0 
-    if btn_id < 0 or btn_id >= BTN_COUNT or player < 0 or player >= MAX_PLAYERS then
+    if (btn_id ~= BTN_PAUSE) and (btn_id < 0 or btn_id >= BTN_COUNT or player < 0 or player >= MAX_PLAYERS) then
         return false
     end
     local state = __input_state[player*BTN_COUNT + btn_id]

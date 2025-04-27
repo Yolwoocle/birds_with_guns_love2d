@@ -9,13 +9,16 @@ function _init_audio()
     end
     if __sounds then
         for k, v in pairs(__sounds) do
-            __sounds[k]:stop()
+            __sounds[k].source:stop()
         end
     end
 
     __sounds = {}
     for i=0, 63 do
-        __sounds[i] = love.audio.newSource("game/assets/sfx/sfx_"..tostring(i)..".wav", "static")
+        __sounds[i] = {
+            source = love.audio.newSource("game/assets/sfx/sfx_"..tostring(i)..".wav", "static"),
+            paused = false,
+        }
     end
     
     __music = {}
@@ -58,11 +61,37 @@ function sfx(n, channel, offset, length)
     if not __sounds[n] then
         return
     end
-    local sound = __sounds[n]
-    if sound:isPlaying() then
-        sound:stop()
+    local source = __sounds[n].source
+    if source:isPlaying() then
+        source:stop()
     end
-	sound:play()
+	source:play()
+end
+
+function _pause_all_sources()
+    for id, sound in pairs(__sounds) do
+        if sound.source:isPlaying() then
+            sound.source:pause()
+            sound.paused = true
+        end
+    end
+
+    if __current_music then
+        __current_music:pause()
+    end
+end
+
+function _resume_all_sources()
+    for id, sound in pairs(__sounds) do
+        if sound.paused then
+            sound.source:play()
+        end
+        sound.paused = false
+    end
+
+    if __current_music then
+        __current_music:play()
+    end
 end
 
 function sfxeffect(effectname, value)

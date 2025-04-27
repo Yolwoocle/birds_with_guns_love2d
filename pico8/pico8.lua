@@ -10,6 +10,7 @@ require "pico8.memory"
 require "pico8.table"
 require "pico8.map"
 require "pico8.audio"
+require "pico8.menus"
 
 local pico8 = {}
 
@@ -39,6 +40,7 @@ function pico8.init()
     __height = canvas_height
 
     __canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
+    __buffer_canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
     __screenshot_buffer_canvas = love.graphics.newCanvas(__width*screenshot_scale, __height*screenshot_scale, {dpiscale = 1})
     __accum_t = 0.0
     __accum_frame60 = 0
@@ -88,6 +90,7 @@ function pico8.init()
     _load_sprite_flags()
     _init_map()
     _init_audio()
+    _init_menus()
 
     pico8._init()
 end
@@ -102,10 +105,14 @@ function pico8.update(dt)
 	if (__accum_t > update_fixed_dt) then
 		__accum_t = __accum_t - update_fixed_dt
 
-        pico8._run_frame(__accum_frame60 % 2 == 0)
-		pico8._update60()
-        if __accum_frame60 % 2 == 0 then
-            pico8._update()
+        pico8._engine_update(1/60, __accum_frame60 % 2 == 0)
+        if not __paused then
+            pico8._update60()
+            if __accum_frame60 % 2 == 0 then
+                pico8._update()
+            end
+        else
+            _update_menus(dt)
         end
         __accum_frame60 = __accum_frame60 + 1
 	end
@@ -118,8 +125,11 @@ function pico8.draw()
     love.graphics.setShader(__shader_pico8_draw)
     love.graphics.origin()
     love.graphics.translate(-__camera_x, -__camera_y)
-    pico8._draw()
+    if not __paused then        
+        pico8._draw()
+    end
     pico8._draw_debug()    
+    _draw_menus()
     love.graphics.setCanvas()
     
     love.graphics.origin()
@@ -136,7 +146,10 @@ function pico8._draw_debug()
     love.graphics.origin()
     if __debug_info then
         rectfill(0, 0, 32, 16, 0)
-        print(tostring(love.timer.getFPS()).."FPS", 0, 0, 7)
+        print_(tostring(love.timer.getFPS()).."FPS", 0, 0, 7)
+        print_(__input_state[BTN_PAUSE], 0, 0+6*1, 7)
+        print_(pico8._is_btn_down(BTN_PAUSE), 0, 0+6*2, 7)
+        print_(btn(BTN_PAUSE), 0, 0+6*3, 7)
     end 
 end
 
@@ -146,11 +159,18 @@ function pico8.wheelmoved(x, y)
     __buffer_mouse_wheel_state = mid(round(y), 1, -1)
 end
 
-function pico8._run_frame(is_30fps_frame)
+function pico8._engine_update(dt, is_30fps_frame)
+    pico8._update_input_state()
+    
     __mouse_wheel_state = __buffer_mouse_wheel_state
     __buffer_mouse_wheel_state = 0
-    
-    pico8._update_input_state()
+
+    if btnp(BTN_PAUSE) then
+        _toggle_pause()
+    end
+    if not __paused then
+        _update_meta(dt)
+    end
 end
 
 function pico8._is_btn_down(btn_id)

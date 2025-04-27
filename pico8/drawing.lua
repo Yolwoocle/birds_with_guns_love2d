@@ -14,7 +14,7 @@ require "pico8.math"
     [x] circfill
 ]]
 
-local function _set_love_color(col)
+function _set_love_color(col)
     love.graphics.setColor(col/255, 0, 0, 1)
 end
 
@@ -70,7 +70,6 @@ function rectfill(px1, py1, px2, py2, col)
     love.graphics.rectangle("fill", x, y, w, h)
     __shader_pico8_draw:send("transparencyEnabled", true)
 end
-
 
 function circ(x, y, r, col)
     r = r or 4

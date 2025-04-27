@@ -23,10 +23,6 @@ function _load_sprite_flags()
     end
 end
 
-local function _set_love_color(col)
-    love.graphics.setColor(col/255, 0, 0, 1)
-end
-
 function spr(n, x, y, w, h, flip_x, flip_y)
     if not n then
         return

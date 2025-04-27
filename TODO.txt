@@ -1,7 +1,9 @@
 Needed
-- audio sounds watered down
+- audio sounds are watered down
+- music flags (looping, etc)
 - apply low-pass filter to audio between wagons
 - pause menu, options menu 
+- gamepad support
 - control remapping
 - dual stick aiming
 

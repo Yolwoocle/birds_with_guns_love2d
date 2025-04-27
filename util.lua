@@ -1,4 +1,30 @@
 
+function copy_table_deep(orig)
+	-- http://lua-users.org/wiki/CopyTable
+	local orig_type = type(orig)
+	local copy
+	if orig_type == 'table' then
+		copy = {}
+		for orig_key, orig_value in next, orig, nil do
+			copy[copy_table_deep(orig_key)] = copy_table_deep(orig_value)
+		end
+		setmetatable(copy, copy_table_deep(getmetatable(orig)))
+	else -- number, string, boolean, etc
+		copy = orig
+	end
+	return copy
+end
+
+function copy_table_shallow(tab)
+	local ntab = {}
+
+	for k, v in pairs(tab) do
+		ntab[k] = v
+	end
+	return ntab
+end
+
+
 --- func desc
 ---@param node table
 ---@return string
