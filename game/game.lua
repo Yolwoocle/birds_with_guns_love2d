@@ -298,6 +298,20 @@ function ospr(s, x, y, col)
 	spr(s, x, y)
 end
 
+function ooprint(t, x, y, col, ocol1, ocol2)
+	ocol1 = ocol1 or 1
+	ocol2 = ocol2 or 7
+
+	for i = -1, 1 do
+		for j = -1, 1 do
+			if i ~= 0 and j ~= 0 then
+				oprint(t, x + i, y + j, col, ocol2)
+			end
+		end
+	end
+	oprint(t, x, y, col, ocol1)
+end
+
 function oprint(t, x, y, col, ocol)
 	local ocol = ocol or 1
 	for i = -1, 1 do
@@ -2136,7 +2150,7 @@ function draw_main_menu(m)
 
 	palt(0, false)
 
-	draw_logo(44, 5 - oy)
+	draw_logo(44, 8 - oy)
 
 	-- buttons
 	local sel = m.buttons[m.sel]
@@ -2173,7 +2187,7 @@ function draw_main_menu(m)
 			1, i.sh)
 
 		if i.n == 13 and i.active then
-			rectfill(2, 12, 82, 58, 12)
+			rectfill(2, 12, 82, 58, 1)
 			rect(    2, 12, 82, 58, 7)
 			oprint("a game by:", 6, 15, 14)
 			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 15)
@@ -2186,32 +2200,50 @@ end
 
 function draw_logo(x, y)
 	--"birds"
-	oxxl("birds", x, y, 10)
-	oxxl("guns", x + 4, y + 15, 6)
+	ooxxl("birds", x, y, 10, 1, 7)
+	ooxxl("guns", x + 4, y + 15, 6, 1, 7)
+	oxxl("birds", x, y, 10, 1)
+	oxxl("guns", x + 4, y + 15, 6, 1)
 
 	--"with"
 	oprint("with", x + 11, y + 10)
 	oprint("with", x + 11, y + 9)
 	
-	oprint("deluxe", x + 7, y + 28, 14, 2)
-	oprint("deluxe", x + 7, y + 27, 14, 2)
+	ooprint("dx", x + 37, y + 19, 14, 2)
+	ooprint("dx", x + 37, y + 20, 14, 2)
+	oprint("dx",  x + 37, y + 19, 14, 2)
 end
 
-function oxxl(t, x, y, col)
+function ooxxl(t, x, y, txtcol, ocol1, ocol2)
+	oxxl(t, x-1, y-1, txtcol, ocol2)
+	oxxl(t, x,   y-1, txtcol, ocol2)
+	oxxl(t, x+1, y-1, txtcol, ocol2)
+	oxxl(t, x-1, y,   txtcol, ocol2)
+	oxxl(t, x+1, y,   txtcol, ocol2)
+	oxxl(t, x-1, y+1, txtcol, ocol2)
+	oxxl(t, x,   y+1, txtcol, ocol2)
+	oxxl(t, x+1, y+1, txtcol, ocol2)
+
+	oxxl(t, x, y, txtcol, ocol1)
+end
+
+function oxxl(t, x, y, txtcol, ocol)
+	ocol=ocol or 1
+
 	--credit to freds72
 	for ix = -2, 2 do
 		for iy = -2, 4 do
 			if abs(ix) == 2 or abs(iy) >= 2 then
-				print_pinball(t, x + ix, y + iy, 1)
+				print_pinball(t, x + ix, y + iy, ocol)
 			end
 		end
 	end
 
-	col = col or 7
+	txtcol = txtcol or 7
 	for ix = -1, 1 do
 		for iy = -1, 1 do
 			print_pinball(t,
-				x + ix, y + iy, col)
+				x + ix, y + iy, txtcol)
 		end
 	end
 end

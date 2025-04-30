@@ -18,6 +18,11 @@ function _set_love_color(col)
     love.graphics.setColor(col/255, 0, 0, 1)
 end
 
+function _set_layer(id)
+    __canvas = __layers[id]
+    love.graphics.setCanvas(__canvas)
+end
+
 function cls(color)
     color = color or 0
     love.graphics.clear(color/255, 0, 0, 1)

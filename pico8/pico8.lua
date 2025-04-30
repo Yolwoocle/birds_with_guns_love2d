@@ -39,8 +39,12 @@ function pico8.init()
     __width = canvas_width
     __height = canvas_height
 
-    __canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
+    __layers = {
+        love.graphics.newCanvas(__width, __height, {dpiscale = 1}), -- Game canvas
+        love.graphics.newCanvas(__width, __height, {dpiscale = 1}), -- Menu canvas
+    }
     __buffer_canvas = love.graphics.newCanvas(__width, __height, {dpiscale = 1})
+    __canvas = __layers[1]
     __screenshot_buffer_canvas = love.graphics.newCanvas(__width*screenshot_scale, __height*screenshot_scale, {dpiscale = 1})
     __accum_t = 0.0
     __accum_frame60 = 0
@@ -128,8 +132,17 @@ function pico8.draw()
     if not __paused then        
         pico8._draw()
     end
-    pico8._draw_debug()    
+    pico8._draw_debug()   
+
+    love.graphics.setCanvas(__buffer_canvas)
+    love.graphics.setColor(1, 1, 1, 1) 
+    love.graphics.setShader()
+    love.graphics.draw(__canvas, 0, 0)
+    love.graphics.setShader(__shader_pico8_draw)
     _draw_menus()
+    love.graphics.setShader()
+
+    -- Render final canvas
     love.graphics.setCanvas()
     
     love.graphics.origin()
@@ -137,7 +150,9 @@ function pico8.draw()
     local old_color = {love.graphics.getColor()}
     love.graphics.setColor(1, 1, 1, 1) 
     love.graphics.setShader(__shader_index_to_color)
-	love.graphics.draw(__canvas, __canvas_ox, __canvas_oy, 0, __canvas_scale, __canvas_scale)
+
+    love.graphics.draw(__buffer_canvas, __canvas_ox, __canvas_oy, 0, __canvas_scale, __canvas_scale)
+
     love.graphics.setShader()
     love.graphics.setColor(old_color) 
 end

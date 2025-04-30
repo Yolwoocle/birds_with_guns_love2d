@@ -1,7 +1,7 @@
 Needed
-- audio sounds are watered down
+- audio sounds are watered down // https://github.com/love2d/love/issues/2181
+- export the sounds multiple types to create variation (esp. noisy sounds) 
 - music flags (looping, etc)
-- apply low-pass filter to audio between wagons
 - pause menu, options menu 
 - gamepad support
 - control remapping
@@ -14,3 +14,4 @@ Nice to have
 
 Done
 - music should reset when restarting game
+- apply low-pass filter to audio between wagons

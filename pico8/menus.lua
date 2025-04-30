@@ -1,3 +1,7 @@
+local _menu_line_spacing = 2
+local _menu_padding = 6
+local _menu_width = 82
+
 function _init_menus()
     __paused = false
     
@@ -12,7 +16,13 @@ function _init_menus()
                 end},
                 {"restart", function()
                     run()
-                end}
+                end},
+                {"test", function()
+                end},
+                {"test", function()
+                end},
+                {"test", function()
+                end},
             }
         },
         options = {
@@ -24,10 +34,23 @@ function _init_menus()
 
     __current_menu_name = nil
     __current_menu = nil
+
+    __current_selection_index = 1
 end
 
 function _update_menus(dt)
-    
+    if __current_menu then
+        if btnp(BTN_UP) then
+            __current_selection_index = mod1(__current_selection_index - 1, #__current_menu.items)
+        elseif btnp(BTN_DOWN) then
+            __current_selection_index = mod1(__current_selection_index + 1, #__current_menu.items)
+        elseif btnp(BTN_O) or btnp(BTN_X) then
+            local f = __current_menu.items[__current_selection_index][2]
+            if f then
+                f()
+            end
+        end
+    end
 end
 
 local function _get_menu_height()
@@ -37,26 +60,37 @@ local function _get_menu_height()
 
     local h = 0
     for i=1, #__current_menu.items do
-        h = h + __font:getHeight()
+        h = h + __font:getHeight() 
+        if i > 1 then
+            h = h + _menu_line_spacing
+        end 
     end
-    return h
+    return h + 2*_menu_padding
 end
 
 function _draw_menus()
     if not __paused or not __current_menu then
         return
     end
+
+    local x0 = (__width - _menu_width) / 2
    
     local h = _get_menu_height() 
-    local y0 = __height / 2 - h/2
+    local y0 = flr(__height / 2 - h/2)
 
-    rectfill(32, y0, 64+32, y0+h, 1)
+    rectfill(x0, y0, __width-x0-1, y0+h-1, 3)
+    rect(x0+1, y0+1, __width-x0-2, y0+h-2, 7)
     
-    local y = y0
+    local y = y0 + _menu_padding + 1
     for i=1, #__current_menu.items do
         local str = __current_menu.items[i][1]
-        print_(str, 32, y, 7)
-        y = y + __font:getHeight()
+        local selected = (__current_selection_index == i)
+        
+        if selected then
+            print_("▶", x0 + 4 + (selected and 1 or 0), y, 7)
+        end
+        print_(str, x0 + 11 + (selected and 1 or 0), y, 7)
+        y = y + __font:getHeight() + _menu_line_spacing
     end
 end
 
