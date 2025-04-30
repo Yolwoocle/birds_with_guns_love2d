@@ -148,6 +148,10 @@ function pico8.draw()
 
     love.graphics.setShader()
     love.graphics.setColor(old_color)
+
+    __final_canvas:renderTo(function()
+        love.graphics.clear()
+    end)
 end
 
 function pico8._draw_menu_layer()

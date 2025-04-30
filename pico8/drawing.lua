@@ -78,15 +78,22 @@ function darkrect(px1, py1, px2, py2)
     local h = abs(py1 - py2) +1
 
     love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setShader()
+    __buffer_canvas:renderTo(function()
+        love.graphics.clear(0,0,0,0)
+        love.graphics.draw(__canvas, 0, 0)
+    end)
+    love.graphics.setShader(__shader_pico8_draw)
+
     love.graphics.setScissor(x, y, w, h)
-        
-    __shader_pico8_draw:send("transparencyEnabled", false)
+    
     local buffpal = copy_table_deep(__palette)
     pal({ [0]=0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 })
-
-    love.graphics.draw(__canvas, 0, 0)
-
+    
+    __shader_pico8_draw:send("transparencyEnabled", false)
+    love.graphics.draw(__buffer_canvas, 0, 0)
     __shader_pico8_draw:send("transparencyEnabled", true)
+
     __palette = buffpal
     _apply_palette()
 
