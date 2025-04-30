@@ -115,7 +115,9 @@ function _set_menu(name)
         __paused = false
         __current_menu_name = nil
         __current_menu = nil
-        _resume_all_sources()
+
+        sfxeffect("lowpass", __old_lowpass_value)
+
         return
     end
     if not __menus[name] then
@@ -125,5 +127,13 @@ function _set_menu(name)
     __paused = true
     __current_menu_name = name
     __current_menu = __menus[name]
+
+    __old_lowpass_value = __sfxeffects["lowpass"]
+    sfxeffect("lowpass", 0.003)
+
     _pause_all_sources()
+    
+    if __current_music then
+        __current_music:play()
+    end
 end

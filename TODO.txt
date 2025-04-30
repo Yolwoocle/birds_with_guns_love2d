@@ -2,11 +2,12 @@ Needed
 - audio sounds are watered down // https://github.com/love2d/love/issues/2181
 - export the sounds multiple types to create variation (esp. noisy sounds) 
 - music flags (looping, etc)
-- pause menu, options menu 
+- options menu 
 - gamepad support
 - control remapping
 - dual stick aiming
-- palette problem (see birds on selection screen)
+- menuitem
+- music bug if pause then unpause on game over screen
 
 Nice to have
 - localization (french, japanese?, chinese?)
@@ -14,5 +15,7 @@ Nice to have
 - online co-op?
 
 Done
+- pause menu 
+- palette problem (see birds on selection screen)
 - music should reset when restarting game
 - apply low-pass filter to audio between wagons

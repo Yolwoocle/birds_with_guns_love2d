@@ -88,15 +88,17 @@ function darkrect(px1, py1, px2, py2)
     love.graphics.setScissor(x, y, w, h)
     
     local buffpal = copy_table_deep(__palette)
-    pal({ [0]=0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 })
     
     __shader_pico8_draw:send("transparencyEnabled", false)
+    pal({ [0]=0, 0, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1})
+    __shader_pico8_draw:send("transparencyMask", 0)
     love.graphics.draw(__buffer_canvas, 0, 0)
     __shader_pico8_draw:send("transparencyEnabled", true)
 
     __palette = buffpal
     _apply_palette()
 
+    __shader_pico8_draw:send("transparencyMask", __transparency_mask)
     _set_love_color(__current_color)
     love.graphics.setScissor()
 end
