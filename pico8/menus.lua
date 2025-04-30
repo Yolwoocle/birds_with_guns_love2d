@@ -78,7 +78,7 @@ function _draw_menus()
     local h = _get_menu_height() 
     local y0 = flr(__height / 2 - h/2)
 
-    rectfill(x0, y0, __width-x0-1, y0+h-1, 3)
+    darkrect(x0, y0, __width-x0-1, y0+h-1)
     rect(x0+1, y0+1, __width-x0-2, y0+h-2, 7)
     
     local y = y0 + _menu_padding + 1

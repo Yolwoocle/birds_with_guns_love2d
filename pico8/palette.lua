@@ -170,8 +170,7 @@ function pal(a, b, flag)
         return
     end
 
-    __shader_pico8_draw:send("palette", unpack(__palette))
-    __shader_index_to_color:send("palette", unpack(__palette))
+    _apply_palette()
     if flag == 1 then
         -- 1 to modify the palette for the screen already drawn
         -- TODO
@@ -185,6 +184,11 @@ function pal(a, b, flag)
         -- love.graphics.setColor(old_color) 
         -- love.graphics.setCanvas(old_canvas) 
     end
+end
+
+function _apply_palette()
+    __shader_pico8_draw:send("palette", unpack(__palette))
+    __shader_index_to_color:send("palette", unpack(__palette))
 end
 
 

@@ -2187,7 +2187,8 @@ function draw_main_menu(m)
 			1, i.sh)
 
 		if i.n == 13 and i.active then
-			rectfill(2, 12, 82, 58, 1)
+			-- rectfill(2, 12, 82, 58, 1)
+			darkrect(2, 12, 82, 58)
 			rect(    2, 12, 82, 58, 7)
 			oprint("a game by:", 6, 15, 14)
 			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 15)

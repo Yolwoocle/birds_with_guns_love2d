@@ -18,11 +18,6 @@ function _set_love_color(col)
     love.graphics.setColor(col/255, 0, 0, 1)
 end
 
-function _set_layer(id)
-    __canvas = __layers[id]
-    love.graphics.setCanvas(__canvas)
-end
-
 function cls(color)
     color = color or 0
     love.graphics.clear(color/255, 0, 0, 1)
@@ -64,16 +59,39 @@ function rectfill(px1, py1, px2, py2, col)
     else
         col = __current_color
     end
+    
+    local x = flr(min(px1, px2))
+    local y = flr(min(py1, py2))
+    local w = abs(px1 - px2) +1
+    local h = abs(py1 - py2) +1
+    
+    _set_love_color(col)
+    __shader_pico8_draw:send("transparencyEnabled", false)
+    love.graphics.rectangle("fill", x, y, w, h)
+    __shader_pico8_draw:send("transparencyEnabled", true)
+end
 
+function darkrect(px1, py1, px2, py2)
     local x = flr(min(px1, px2))
     local y = flr(min(py1, py2))
     local w = abs(px1 - px2) +1
     local h = abs(py1 - py2) +1
 
-    _set_love_color(col)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setScissor(x, y, w, h)
+        
     __shader_pico8_draw:send("transparencyEnabled", false)
-    love.graphics.rectangle("fill", x, y, w, h)
+    local buffpal = copy_table_deep(__palette)
+    pal({ [0]=0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 })
+
+    love.graphics.draw(__canvas, 0, 0)
+
     __shader_pico8_draw:send("transparencyEnabled", true)
+    __palette = buffpal
+    _apply_palette()
+
+    _set_love_color(__current_color)
+    love.graphics.setScissor()
 end
 
 function circ(x, y, r, col)
@@ -141,8 +159,8 @@ end
 function print_pinball(_str, _x, _y, col)
     local old_font = __font
     __font = __font_pinball
-
+    
     print_(_str, _x, _y, col)
-
+    
     __font = old_font
 end

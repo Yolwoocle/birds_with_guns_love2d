@@ -6,6 +6,7 @@ Needed
 - gamepad support
 - control remapping
 - dual stick aiming
+- palette problem (see birds on selection screen)
 
 Nice to have
 - localization (french, japanese?, chinese?)
