@@ -128,6 +128,8 @@ function _set_menu(name)
     __current_menu_name = name
     __current_menu = __menus[name]
 
+    __current_selection_index = 1
+
     __old_lowpass_value = __sfxeffects["lowpass"]
     sfxeffect("lowpass", 0.003)
 

@@ -2188,11 +2188,11 @@ function draw_main_menu(m)
 
 		if i.n == 13 and i.active then
 			-- rectfill(2, 12, 82, 58, 1)
-			darkrect(2, 12, 82, 58)
-			rect(    2, 12, 82, 58, 7)
-			oprint("a game by:", 6, 15, 14)
-			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 15)
-			oprint("\n\ncode,art\ncode\ncode\nmusic", 47, 15, 13)
+			darkrect(2, 12, 82, 60)
+			rect(    3, 13, 81, 59, 7)
+			oprint("a game by:", 6, 16, 14)
+			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 16)
+			oprint("\n\ncode,art\ncode\ncode\nmusic", 47, 16, 13)
 		end
 	end
 	palt()
