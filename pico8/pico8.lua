@@ -1,5 +1,6 @@
 require "pico8.constants"
 require "pico8.string"
+require "pico8.lang"
 require "pico8.math"
 require "pico8.meta"
 require "pico8.palette"
@@ -88,6 +89,7 @@ function pico8.init()
         end
     end
 
+    _init_lang()
     _init_graphics()
     _load_sprite_flags()
     _init_map()
