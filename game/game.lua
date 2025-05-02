@@ -168,7 +168,6 @@ function pico8._update60()
 
 	shake = max(0, shake - 0.3)
 
-	local txt = keyboard and "keyboard" or "mouse+keys"
 	local txt = keyboard and "{menu_input_mode_keyboard}" or "{menu_input_mode_mouse_keys}"
 	menuitem(3, "{menu_input_mode}" .. txt, function() keyboard = not keyboard end)
 	menuitem(2, "⌂ {menu_main}", function() run("-") end)
