@@ -169,8 +169,9 @@ function pico8._update60()
 	shake = max(0, shake - 0.3)
 
 	local txt = keyboard and "keyboard" or "mouse+keys"
-	menuitem(3, "mode:" .. txt, function() keyboard = not keyboard end)
-	menuitem(2, "⌂ main menu", function() run("-") end)
+	local txt = keyboard and "{menu_input_mode_keyboard}" or "{menu_input_mode_mouse_keys}"
+	menuitem(3, "{menu_input_mode}" .. txt, function() keyboard = not keyboard end)
+	menuitem(2, "⌂ {menu_main}", function() run("-") end)
 
 	if (btn(BTN_X) or btn(BTN_O)) then keyboard = true end
 	if (lmb) then keyboard = false end
@@ -188,28 +189,6 @@ function pico8._draw()
 	drawgrass()
 
 	draw_map()
-	if wagon_n == 0 and menu == "game" then
-		local s = [[
-  ⬆️        [e]
-⬅️⬇️➡️ or [s d f]
-     move
-
-[click]  shoot
-[scroll] change
-          weapon
-		]]
-		if (keyboard) then
-			s = [[
-    ⬆️
-  ⬅️⬇️➡️ move
-
-  ❎ (x) shoot
-  🅾️ (c) change
-         weapon
-        ]]
-		end
-		print_(s, 33, 42, 2)
-	end
 
 	draw_weel()
 
@@ -719,7 +698,7 @@ function draw_player_ui(p)
 	if (p.ammo > 0) then rectfill(camx_ + 85, 2, camx_ + 85 + l, 6, 9) end
 
 	local s, col = tostr(p.gun.ammo), 7
-	if (s == "0") then s, col = "no ammo!", 14 end
+	if (s == "0") then s, col = "{game_no_ammo}", 14 end
 	spr(110, camx_ + 89, 2)
 	print_(s, camx_ + 95, 2, col)
 
@@ -739,11 +718,37 @@ function draw_player_ui(p)
 	else
 		color = 7
 	end
-	oprint("wagon " .. wagon_n + 1 .. "/7", camx_ + 46, 2, color, 1)
+	oprint("{stat_wagon} " .. wagon_n + 1 .. "/7", camx_ + 46, 2, color, 1)
 	--print_(test,0,80)
 
 	love.graphics.pop()
 	-- love.graphics.translate(-__camera_x, -__camera_y)
+
+	-- controls	
+	if wagon_n == 0 and menu == "game" then
+		-- 		local s = [[
+		--   ⬆️        [e]
+		-- ⬅️⬇️➡️ or [s d f]
+		--      {action_move}
+		
+		-- [click]  {action_shoot}
+		-- [scroll] {action_change_weapon}
+		-- 		]]
+		-- 		if (keyboard) then
+		-- 			s = [[
+		--     ⬆️
+		--   ⬅️⬇️➡️ {action_move}
+		
+		--   ❎ (x) {action_shoot}
+		--   🅾️ (c) {action_change_weapon}
+		--         	]]
+		-- 		end
+
+		s = _parse_text("⬆️⬅️⬇️➡️{action_move} ❎{action_shoot} 🅾️{action_change_weapon}")
+		local txtw = get_text_width(s)
+		rectfill(0, 118, txtw + 2, 127, 1)
+		print_(s, 1, 120, 7)
+	end
 end
 
 function nextgun(p)
@@ -808,6 +813,7 @@ function make_gun(args, fire)
 	--todo:not have 3000 args
 	local gun = {
 		name = name_,
+		displayname = tr_text("gun_"..name_) or "",
 		spr = sprr,
 		spd = spd,
 		oa = oa, --offset angle in [0,1[
@@ -848,7 +854,7 @@ function make_gun(args, fire)
 			s = 77
 			lifspa = 5
 		end
-		if (name == "boxing glove") then s, lifspa = 77, 10 end
+		if (name == "boxing_glove") then s, lifspa = 77, 10 end
 		if (name == "flamethrower") then
 			lifspa = 40
 			palette = "1,2,3,4,5,6,10,8,8,9"
@@ -912,11 +918,11 @@ function initguns()
 		),
 
 
-		fireworklauncher = make_gun("firework launcher, 74, 25,2.5,.02,0.1 ,0,       0,   80,    52, 0.6",
+		fireworklauncher = make_gun("firework_launcher, 74, 25,2.5,.02,0.1 ,0,       0,   80,    52, 0.6",
 			shoot1
 		),
 
-		boxing_glove = make_gun("boxing glove, 72, 18,3.3,.005,1 , 0, 0, 1,      53, -0.96",
+		boxing_glove = make_gun("boxing_glove, 72, 18,3.3,.005,1 , 0, 0, 1,      53, -0.96",
 			function(gun, x, y, dir)
 				for i = 1, 7 do
 					gun:shoot(x, y, dir)
@@ -934,7 +940,7 @@ function initguns()
 			shoot1
 		),
 
-		ringcannon = make_gun("ring cannon,    71, 45,2, .01,3,  0,   0,  50,    32, 0",
+		ringcannon = make_gun("ring_cannon,    71, 45,2, .01,3,  0,   0,  50,    32, 0",
 			function(gun, x, y, dir)
 				for i = 1, 20 do
 					local o = i / 20
@@ -958,7 +964,7 @@ function initguns()
 		),
 
 		--name           spr cd spd oa dmg is_enemy auto maxammo sfx
-		assaultrifle = make_gun("assault rifle, 67, 30,4, .02,1   ,0,       1, 75,      33, .3",
+		assaultrifle = make_gun("assault_rifle, 67, 30,4, .02,1   ,0,       1, 75,      33, .3",
 			function(gun, x, y, dir)
 				gun.burst = 4
 				gun.x, gun.y = x, y
@@ -973,7 +979,7 @@ function initguns()
 		),
 
 		--name  spr cd spd oa dmg is_enemy auto maxammo sfx   kb
-		gatlinggun = make_gun("gatling gun, 73, 3, 3, .08, 2  ,0,        1,  500,     33, 1",
+		gatlinggun = make_gun("gatling_gun, 73, 3, 3, .08, 2  ,0,        1,  500,     33, 1",
 			shoot1
 		),
 
@@ -1053,11 +1059,12 @@ function initguns()
 	for k, v in pairs(guns) do
 		if (not v.is_enemy) then add(iguns, v) end
 	end
-end
 
-kak = make_gun("kak, 57, 20,2.1,.005,3 , 0, 0, 0,      36, 1",
-	shoot1
-)
+	
+	kak = make_gun("kak, 57, 20,2.1,.005,3 , 0, 0, 0,      36, 1",
+		shoot1
+	)
+end
 
 
 function rnd_gun()
@@ -2042,6 +2049,7 @@ function make_main_menu()
 			sh = 2,
 
 			name = names[i],
+			displayname = tr_text("bird_"..names[i]),
 			active = false,
 		})
 	end
@@ -2064,6 +2072,7 @@ function make_main_menu()
 			sh = 1,
 
 			name = name,
+			displayname = tr_text("menu_main_"..name) or "",
 			active = false,
 		}
 	end
@@ -2071,7 +2080,7 @@ function make_main_menu()
 	-------
 	m.buttons[0] = make_btn("0,124,39,114,91,9,9,random")
 
-	m.buttons[13] = make_btn("13,111,39,2,2,9,9,random")
+	m.buttons[13] = make_btn("13,111,39,2,2,9,9,")
 
 	return m
 end
@@ -2156,8 +2165,8 @@ function draw_main_menu(m)
 	local sel = m.buttons[m.sel]
 	rectfill(
 		2, 93 + oy,
-		2 + #sel.name * 8, 102 + oy, 1)
-	wide(sel.name, 4, 95 + oy, 7)
+		2 + #(sel.displayname or sel.name) * 8, 102 + oy, 1)
+	wide((sel.displayname or sel.name), 4, 95 + oy, 7)
 	palt()
 
 	-- encaged bird
@@ -2190,9 +2199,9 @@ function draw_main_menu(m)
 			-- rectfill(2, 12, 82, 58, 1)
 			darkrect(2, 12, 82, 60)
 			rect(    3, 13, 81, 59, 7)
-			oprint("a game by:", 6, 16, 14)
+			oprint("{credits_game_by}", 6, 16, 14)
 			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 16)
-			oprint("\n\ncode,art\ncode\ncode\nmusic", 47, 16, 13)
+			oprint("\n\n{credits_code},{credits_art}\n{credits_code}\n{credits_code}\n{credits_music}", 47, 16, 13)
 		end
 	end
 	palt()
@@ -2311,7 +2320,7 @@ function update_drops()
 
 				do_ptc = true
 				col = 9
-				txt = "+" .. q .. " ammo"
+				txt = "+" .. q .. " {stat_ammo}"
 
 				sfx(38)
 			elseif d.type == "health" then
@@ -2320,7 +2329,7 @@ function update_drops()
 
 				do_ptc = true
 				col = 8
-				txt = "+" .. d.q .. " health"
+				txt = "+" .. d.q .. " {stat_health}"
 
 				sfx(38)
 			elseif d.type == "gun"
@@ -2331,7 +2340,7 @@ function update_drops()
 
 				do_ptc = true
 				col = 6
-				txt = d.q.name
+				txt = d.q.displayname
 
 				p.gunls[p.gunn], d.q = d.q, p.gunls[p.gunn]
 				update_gun(p)
@@ -2399,8 +2408,8 @@ function make_death_menu(iswin)
 		nstats = 0,
 	}
 
-	local t, t2 = "retry", "change bird"
-	if (iswin) then t = "play again", "title screen" end
+	local t, t2 = "{menu_retry}", "{menu_main}"
+	-- if (iswin) then t = "{menu_play_again}", "{menu_main}" end
 
 	m.buttons = {}
 	m.buttons[1] = {
@@ -2505,7 +2514,7 @@ function draw_death_menu(m)
 	--text & buttons
 	local t = m.timer / 100
 	local txt = m.iswin and
-		"congrats!" or "game over"
+		"{game_win}" or "{game_over}"
 
 	oxxl(txt,
 		camx + 30 + cos(t) * 3,
@@ -2547,8 +2556,8 @@ function draw_death_menu(m)
 
 	--hard mode prompt
 	if m.iswin then
-		local txt = "hold the 'i' button\non the title screen\nto unlock hard mode\n"
-		if (degaplus ~= 0) then txt = "bro what !!!\nthis mode was not \nsupposed to be possible !" end
+		local txt = "{game_win_subtext}"
+		if (degaplus ~= 0) then txt = "{game_win_subtext_hard}" end
 		oprint(txt
 		, camx + 25, 1 / t + 70 + sin(t) * 2, 13)
 	end

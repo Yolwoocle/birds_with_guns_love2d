@@ -117,3 +117,10 @@ end
 function print_table(node)
 	print(table_to_str(node))
 end
+
+
+function get_text_width(text, font)
+	local text = text or ' '
+	local font = font or love.graphics.getFont()
+	return font:getWidth(text)
+end

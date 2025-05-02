@@ -90,7 +90,7 @@ function darkrect(px1, py1, px2, py2)
     local buffpal = copy_table_deep(__palette)
     
     __shader_pico8_draw:send("transparencyEnabled", false)
-    pal({ [0]=0, 0, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1})
+    pal({ [0]=0, 0, 0, 1,  1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1})
     __shader_pico8_draw:send("transparencyMask", 0)
     love.graphics.draw(__buffer_canvas, 0, 0)
     __shader_pico8_draw:send("transparencyEnabled", true)
@@ -161,7 +161,7 @@ function print_(_str, _x, _y, col)
     _set_love_color(col+1)
     love.graphics.setFont(__font)
     __shader_pico8_draw:send("transparencyEnabled", false)
-    love.graphics.print(_str, flr(x0), flr(y0))
+    love.graphics.print(_parse_text(_str), flr(x0), flr(y0))
     __shader_pico8_draw:send("transparencyEnabled", true)
 end
 
