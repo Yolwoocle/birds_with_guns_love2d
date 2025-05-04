@@ -1,10 +1,11 @@
 local languages = {
-    en = require "game.lang.en"
+    en = require "game.lang.en",
+    fr = require "game.lang.fr",
 }
 
 function _init_lang()
     __fallback_lang_name = "en"
-    __current_lang_name = "en"
+    __current_lang_name = "fr"
     __current_lang = languages[__current_lang_name]
 end
 

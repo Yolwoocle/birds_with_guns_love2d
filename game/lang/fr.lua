@@ -1,0 +1,58 @@
+return {
+    menu_input_mode = "mode :",
+    menu_input_mode_keyboard = "clavier",
+    menu_input_mode_mouse_keys = "souris+clavier",
+
+    menu_main = "écran titre",
+    menu_main_random = "aléatoire",
+
+    menu_retry = "réessayer",
+    menu_play_again = "rejouer",
+    menu_change_bird = "changer d'oiseau",
+
+    action_move = "bouger",
+    action_shoot = "tirer",
+    action_change_weapon = "changer d'arme",
+
+    credits_game_by = "un jeu par :",
+    credits_code = "code",
+    credits_art = "art",
+    credits_music = "musique",
+
+    bird_pigeon = "pigeon",
+    bird_duck = "canard",
+    bird_sparrow = "moineau",
+    bird_parrot = "perroquet",
+    bird_toucan = "toucan",
+    bird_flamingo = "flamant",
+    bird_eagle = "aigle",
+    bird_seagull = "mouette",
+    bird_ostrich = "autruche",
+    bird_penguin = "manchot",
+    bird_jay = "geai",
+    bird_chicken = "poule",
+
+    gun_revolver = "revolver",
+    gun_firework_launcher = "lance-artifice",
+    gun_boxing_glove = "gant de boxe",
+    gun_bazooka = "bazooka",
+    gun_flamethrower = "lance-flammes",
+    gun_ring_cannon = "canon-bague",
+    gun_shotgun = "fusil à pompe",
+    gun_machinegun = "mitrailleuse",
+    gun_assault_rifle = "fusil d'assaut",
+    gun_sniper = "sniper",
+    gun_minigun = "minigun",
+
+    stat_ammo = "munitions",
+    stat_health = "santé",
+    stat_wagon = "wagon",
+    stat_time = "temps",
+    stat_kills = "kills",
+
+    game_no_ammo = "pas de munitions !",
+    game_over = "game over",
+    game_win = "bravo !",
+    game_win_subtext = "maintenez le bouton 'i'\nsur l'écran titre\npour débloquer le mode difficile\n",
+    game_win_subtext_hard = "mais quoi !!!\nce mode n'était pas\ncensé être possible !",
+}

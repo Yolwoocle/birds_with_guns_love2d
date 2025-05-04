@@ -42,11 +42,13 @@ return {
     gun_machinegun = "machinegun",
     gun_assault_rifle = "assault rifle",
     gun_sniper = "sniper",
-    gun_gatling_gun = "gatling gun",
+    gun_minigun = "minigun",
 
     stat_ammo = "ammo",
     stat_health = "health",
     stat_wagon = "wagon",
+    stat_time = "time",
+    stat_kills = "kills",
 
     game_no_ammo = "no ammo!",
     game_over = "game over",

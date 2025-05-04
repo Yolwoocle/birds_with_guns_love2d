@@ -150,7 +150,7 @@ function print_(_str, _x, _y, col)
     _str = tostring(_str)
     local px = flr(_x)
     local x0 = px
-    local y0 = flr(_y)
+    local y0 = flr(_y) - 4
 
     if col then
         __current_color = col
@@ -158,7 +158,7 @@ function print_(_str, _x, _y, col)
         col = __current_color
     end
 
-    _set_love_color(col+1)
+    _set_love_color(col)
     love.graphics.setFont(__font)
     __shader_pico8_draw:send("transparencyEnabled", false)
     love.graphics.print(_parse_text(_str), flr(x0), flr(y0))
@@ -169,7 +169,7 @@ function print_pinball(_str, _x, _y, col)
     local old_font = __font
     __font = __font_pinball
     
-    print_(_str, _x, _y, col)
+    print_(_str, _x, _y - 4, col)
     
     __font = old_font
 end

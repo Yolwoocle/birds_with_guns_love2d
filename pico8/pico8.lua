@@ -54,10 +54,13 @@ function pico8.init()
     __camera_x = 0
     __camera_y = 0
 
-    __font_normal = love.graphics.newImageFont("game/assets/pico8_font.png", FONT_SYMBOLS)
+    __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_SYMBOLS)
+    __font_extra = love.graphics.newImageFont("pico8/assets/pico8_font_extended.png", FONT_SYMBOLS_EXTENDED)
+    __font_normal:setLineHeight(6/10)
+    __font_normal:setFallbacks(__font_extra)
 
     ---[[[[pinball font]]]]
-    local img = love.graphics.newImage("game/assets/pico8_font.png")
+    local img = love.graphics.newImage("pico8/assets/pico8_font.png")
     local img_data = love.graphics.readbackTexture(img)
     local img_pinball = love.graphics.newCanvas(img:getWidth() * 2, img:getHeight() * 2, { dpiscale = 1 })
     love.graphics.setCanvas(img_pinball)
@@ -76,6 +79,7 @@ function pico8.init()
     love.graphics.setCanvas()
 
     __font_pinball = love.graphics.newImageFont(love.graphics.readbackTexture(img_pinball), FONT_SYMBOLS)
+    __font_pinball:setLineHeight(6/10)
     ---[[[[]]]]
     __font = __font_normal
 

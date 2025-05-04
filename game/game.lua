@@ -440,7 +440,7 @@ function init_player(bird)
 		--p[bird_stats[i] ] = bird_stats[i+n]
 	end
 	--                        [    default    ][     pigeon    ][       duck         ][         sparrow            ][          parrot          ][    toucan         ][     flamingo   ][         eagle            ][    seagull       ][      ostrich     ][    penguin  ][      jay           ][     chicken    ]
-	local bird_weapons = split "revolver,shotgun,revolver,shotgun,revolver,flamethrower,boxing_glove,fireworklauncher,machinegun,fireworklauncher,boxing_glove,shotgun,revolver,ringcannon,boxing_glove,assaultrifle,machinegun,sniper,machinegun,gatlinggun,shotgun,sniper,shotgun,assaultrifle,revolver,bazooka"
+	local bird_weapons = split "revolver,shotgun,revolver,shotgun,revolver,flamethrower,boxing_glove,fireworklauncher,machinegun,fireworklauncher,boxing_glove,shotgun,revolver,ringcannon,boxing_glove,assaultrifle,machinegun,sniper,machinegun,minigun,shotgun,sniper,shotgun,assaultrifle,revolver,bazooka"
 
 	for i = 1, 2 do
 		p.gunls[i] = copy(guns[bird_weapons[2 * n + i]])
@@ -978,7 +978,7 @@ function initguns()
 		),
 
 		--name  spr cd spd oa dmg is_enemy auto maxammo sfx   kb
-		gatlinggun = make_gun("gatling_gun, 73, 3, 3, .08, 2  ,0,        1,  500,     33, 1",
+		minigun = make_gun("minigun, 73, 3, 3, .08, 2  ,0,        1,  500,     33, 1",
 			shoot1
 		),
 
@@ -2259,10 +2259,8 @@ end
 
 function wide(t, x, y, col, pre)
 	--credit to yolwoocle uwu
-	t1 =
-	"                ! #$%&'()  ,-./[12345[7[9:;<=>?([[c[efc[ij[l[[([([st[[[&yz[\\]'_`[[c[efc[ij[l[[([([st[[[&yz{|}~"
-	t2 =
-	"                !\"=$  '()*+,-./0123]5678]:;<=>?@abcdefghijklmnopqrstuvwx]z[\\]^_`abcdefghijklmnopqrstuvwx]z{|} "
+	t1 = "                ! #$%&'()  ,-./[12345[7[9:;<=>?([[c[efc[ij[l[[([([st[[[&yz[\\]'_`[[c[efc[ij[l[[([([st[[[&yz{|}~"
+	t2 = "                !\"=$  '()*+,-./0123]5678]:;<=>?@abcdefghijklmnopqrstuvwx]z[\\]^_`abcdefghijklmnopqrstuvwx]z{|} "
 	n1, n2 = "", ""
 	pre = pre or ""
 
@@ -2538,7 +2536,7 @@ function draw_death_menu(m)
 	for k, v in pairs(stats) do
 		if i < m.nstats then
 			text_y = i * 8 + 1 / t + 40 + sin(t + .3) * 3
-			oprint(k, camx + 35, text_y)
+			oprint(tr_text("stat_"..k) or k, camx + 35, text_y)
 			oprint(v, camx + 80, text_y, 13)
 		end
 		i = i + 1
