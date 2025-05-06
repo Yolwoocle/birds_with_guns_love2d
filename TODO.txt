@@ -1,6 +1,7 @@
 Needed
 - audio sounds are watered down // https://github.com/love2d/love/issues/2181
-- export the sounds multiple types to create variation (esp. noisy sounds) 
+    - solution: convert files to stereo
+- export the sounds multiple times to create variation (esp. noisy sounds) 
 - music flags (looping, etc)
 - options menu 
 - gamepad support

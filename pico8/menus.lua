@@ -1,7 +1,6 @@
 local _menu_line_spacing = 2
 local _menu_padding = 6
 local _menu_width = 82
-local _font_height = 6
 
 function _init_menus()
     __paused = false
@@ -12,17 +11,11 @@ function _init_menus()
                 {"continue", function()
                     _unpause()
                 end},
-                {"options", function()
-                    _set_menu("options")
-                end},
                 {"restart", function()
                     run()
                 end},
-                {"test", function()
-                end},
-                {"test", function()
-                end},
-                {"test", function()
+                {"options", function()
+                    _set_menu("options")
                 end},
             }
         },
@@ -61,7 +54,7 @@ local function _get_menu_height()
 
     local h = 0
     for i=1, #__current_menu.items do
-        h = h + _font_height
+        h = h + FONT_HEIGHT
         if i > 1 then
             h = h + _menu_line_spacing
         end 
@@ -91,7 +84,7 @@ function _draw_menus()
             print_("▶", x0 + 4 + (selected and 1 or 0), y, 7)
         end
         print_(str, x0 + 11 + (selected and 1 or 0), y, 7)
-        y = y + _font_height + _menu_line_spacing
+        y = y + FONT_HEIGHT + _menu_line_spacing
     end
 end
 
