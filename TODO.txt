@@ -10,7 +10,8 @@ Needed
 - menuitem
 - music bug if pause then unpause on game over screen
 - localization: correctly support varying string lengths in the game (centered text, no overflow, etc)
-- localization: accented and special characters (including chinese and asian languages)
+- localization: chinese and asian languages
+- to fix: weird texture bleed with bug enemies
 
 Nice to have
 - localization (french, japanese?, chinese?)
@@ -22,6 +23,7 @@ Done
 - palette problem (see birds on selection screen)
 - music should reset when restarting game
 - apply low-pass filter to audio between wagons
+- localization: accented and special characters
 
 
 FONT_CHARACTERS = 

@@ -37,7 +37,7 @@ return {
     gun_boxing_glove = "gant de boxe",
     gun_bazooka = "bazooka",
     gun_flamethrower = "lance-flammes",
-    gun_ring_cannon = "canon-bague",
+    gun_ring_cannon = "canneau",
     gun_shotgun = "fusil à pompe",
     gun_machinegun = "mitrailleuse",
     gun_assault_rifle = "fusil d'assaut",

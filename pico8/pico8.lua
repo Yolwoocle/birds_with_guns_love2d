@@ -87,11 +87,8 @@ function pico8.init()
     for btn_id, _ in pairs(BTN_MAP) do
         __input_state[btn_id] = 0
     end
-    for ip = 0, MAX_PLAYERS - 1 do
-        for ib = 0, BTN_COUNT - 1 do
-            __input_state[ip * BTN_COUNT + ib] = 0
-        end
-    end
+    _reset_input_state()
+    __standby_input_frames = 10
 
     _init_lang()
     _init_graphics()
@@ -115,6 +112,7 @@ function pico8.update(dt)
 
         pico8._engine_update(1 / 60, __accum_frame60 % 2 == 0)
         if not __paused then
+            __reset_menus()
             pico8._update60()
             if __accum_frame60 % 2 == 0 then
                 pico8._update()
@@ -188,7 +186,10 @@ function pico8.wheelmoved(x, y)
 end
 
 function pico8._engine_update(dt, is_30fps_frame)
-    pico8._update_input_state()
+    if __standby_input_frames <= 0 then
+        pico8._update_input_state()
+    end
+    __standby_input_frames = __standby_input_frames - 1
 
     __mouse_wheel_state = __buffer_mouse_wheel_state
     __buffer_mouse_wheel_state = 0

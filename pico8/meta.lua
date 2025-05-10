@@ -21,10 +21,6 @@ function time()
 end
 t = time
 
-function menuitem(...)
-    -- TODO
-end
-
 function printh(...)
     -- TODO
 end

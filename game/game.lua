@@ -169,8 +169,12 @@ function pico8._update60()
 	shake = max(0, shake - 0.3)
 
 	local txt = keyboard and "{menu_input_mode_keyboard}" or "{menu_input_mode_mouse_keys}"
-	menuitem(3, "{menu_input_mode}" .. txt, function() keyboard = not keyboard end)
-	menuitem(2, "⌂ {menu_main}", function() run("-") end)
+	menuitem(2, "{menu_main}", function() run("-") end)
+	menuitem(3, "{menu_input_mode}" .. txt, function() 
+		keyboard = not keyboard 
+		txt = keyboard and "{menu_input_mode_keyboard}" or "{menu_input_mode_mouse_keys}"
+		menuitem(nil, "{menu_input_mode}" .. txt)
+	end)
 
 	if (btn(BTN_X) or btn(BTN_O)) then keyboard = true end
 	if (lmb) then keyboard = false end
@@ -333,6 +337,7 @@ function update_camera()
 		-- if (wagon_n ~= tl) then poke(0x5f43, 15) end
 		if (wagon_n ~= tl) then sfxeffect("lowpass", 0.1) end
 	end
+	
 	if cam_follow_player then
 		--camera follows player
 		camx = px - 60

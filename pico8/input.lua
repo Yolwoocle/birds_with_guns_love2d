@@ -6,6 +6,14 @@ local bit = require "bit"
     btnp
 ]]
 
+function _reset_input_state()
+    for ip = 0, MAX_PLAYERS - 1 do
+        for ib = 0, BTN_COUNT - 1 do
+            __input_state[ip * BTN_COUNT + ib] = 0
+        end
+    end
+end
+
 -- Not implemented: Undocumented buttons (see https://pico-8.fandom.com/wiki/Btn)
 function btn(btn_id, player)
     -- TODO: bitfield if called with no args (https://pico-8.fandom.com/wiki/Btn) + the rest
