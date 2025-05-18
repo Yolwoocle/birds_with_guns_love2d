@@ -1,3 +1,5 @@
+local utf8 = require "lib.utf8_fixes.utf8_fixes"
+
 --[[
     # String
     split
@@ -6,6 +8,23 @@
     sub
     tostr
 ]]
+
+
+function _load_p8scii()
+    __p8scii_chr_to_ord = {}
+    __p8scii_ord_to_chr = {}
+
+    for i = 0, 15 do
+        __p8scii_chr_to_ord[string.char(i)] = i
+        __p8scii_ord_to_chr[i] = string.char(i)
+    end
+
+    for i=16, utf8.len(P8SCII_SYMBOLS)-1 do
+        local char = utf8.sub(P8SCII_SYMBOLS, i+1, i+1)
+        __p8scii_chr_to_ord[char] = i
+        __p8scii_ord_to_chr[i] = char
+    end
+end
 
 --- split( str, [separator,] [convert_numbers] )
 -- Split a string into a table of elements delimited by the given separator (defaults to ",").  
@@ -89,11 +108,14 @@ end
 --     The ordinal value(s) of the count character(s) at index in str, as a tuple.  
 -- 
 -- NOT IMPLEMENTED: P8SCII at 127 and over  
-function ord(str, index, count)
-    index = index or 1
-    count = count or 1
+-- NOT IMPLEMENTED: multiple characters as argument
+function ord(character)
+    -- function ord(str, index, count)
+    -- index = index or 1
+    -- count = count or 1
 
-    return string.byte(str, index, index+count-1)
+    -- return string.byte(str, index, index+count-1)
+    return __p8scii_chr_to_ord[character] or 0
 end
 
 -- chr( [ord [, ord2, [... ordn]]] )  
@@ -105,8 +127,9 @@ end
 -- 
 -- This function permits conversion of an arbitrary number of ordinal values to the
 -- character(s) they correspond to, in the form of a string.   
-function chr(...)
-    return string.char(...)
+-- NOT IMPLEMENTED: multiple indices as argument
+function chr(index)
+    return __p8scii_ord_to_chr[index] or ""
 end
 
 -- sub( str, start, [end] )

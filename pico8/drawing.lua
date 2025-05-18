@@ -14,6 +14,29 @@ require "pico8.math"
     [x] circfill
 ]]
 
+function _init_pinball_font(font_height_ratio)
+    local img = love.graphics.newImage("pico8/assets/pico8_font.png")
+    local img_data = love.graphics.readbackTexture(img)
+    local img_pinball = love.graphics.newCanvas(img:getWidth() * 2, img:getHeight() * 2, { dpiscale = 1 })
+    love.graphics.setCanvas(img_pinball) 
+
+    for ix = 0, img:getWidth() - 1 do
+        for iy = 0, img:getHeight() - 1 do
+            local pixel = { img_data:getPixel(ix, iy) }
+            love.graphics.setColor(pixel)
+            if iy == 0 and (pixel[1] > 0.8) and (pixel[2] == 0) and (pixel[3] == 0) then
+                love.graphics.rectangle("fill", ix * 2, 0, 2, img:getHeight() * 2)
+            else
+                love.graphics.rectangle("fill", ix * 2, iy * 2, 1, 1)
+            end
+        end
+    end
+    love.graphics.setCanvas()
+
+    __font_pinball = love.graphics.newImageFont(love.graphics.readbackTexture(img_pinball), P8SCII_SYMBOLS)
+    __font_pinball:setLineHeight(font_height_ratio)
+end
+
 function _set_love_color(col)
     love.graphics.setColor(col/255, 0, 0, 1)
 end

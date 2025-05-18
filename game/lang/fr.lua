@@ -1,7 +1,11 @@
 return {
-    menu_input_mode = "mode :",
+    menu_input_mode = "mode:",
     menu_input_mode_keyboard = "clavier",
     menu_input_mode_mouse_keys = "souris+clavier",
+
+    menu_continue = "continuer",
+    menu_restart = "redémarrer",
+    menu_options = "options",
 
     menu_main = "écran titre",
     menu_main_random = "aléatoire",
@@ -14,7 +18,7 @@ return {
     action_shoot = "tirer",
     action_change_weapon = "changer d'arme",
 
-    credits_game_by = "un jeu par :",
+    credits_game_by = "un jeu par:",
     credits_code = "code",
     credits_art = "art",
     credits_music = "musique",
@@ -50,9 +54,9 @@ return {
     stat_time = "temps",
     stat_kills = "kills",
 
-    game_no_ammo = "pas de munitions !",
+    game_no_ammo = "vide!",
     game_over = "game over",
-    game_win = "bravo !",
-    game_win_subtext = "maintenez le bouton 'i'\nsur l'écran titre\npour débloquer le mode difficile\n",
+    game_win = "bravo!",
+    game_win_subtext = "maintenez le 'i'\nsur l'écran titre\npour le mode dur\n",
     game_win_subtext_hard = "mais quoi !!!\nce mode n'était pas\ncensé être possible !",
 }

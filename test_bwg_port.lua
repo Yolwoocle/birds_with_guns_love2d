@@ -227,7 +227,7 @@ function _draw()
 		draw_ptc(ptc)
 	end
 	
-	if(menu~="main")then draw_player_ui(p)end
+	if(menu~="main")then draw_player_ui(azertyuiop)end
 	
 	local m = menus[menu]
 	if m then
@@ -265,7 +265,7 @@ function begin_game()
 	
 	stats.time = time()
 	
-	p.x,p.y = 48,56
+	azertyuiop.x,azertyuiop.y = 48,56
 	
 	shake = shake + 7
 	for i=1,10 do
@@ -318,7 +318,7 @@ function copy(t)
 end
 
 function update_camera()
-	local px = p.x
+	local px = azertyuiop.x
 	local wl = wl
 	local maxlen = 240
 	
@@ -393,7 +393,7 @@ function init_player(bird)
 	b=0
 	dx1=1
 	dy1=0
-	p = {
+	azertyuiop = {
 		n=1,
 		agro = 9999,
 		x=-64,y=-64,
@@ -428,7 +428,7 @@ function init_player(bird)
 		kak = copy(kak)
 	}
 
-	p.gun = p.gunls[1]
+	azertyuiop.gun = azertyuiop.gunls[1]
 
 	--should we keep this in? bird stats
 
@@ -446,70 +446,70 @@ function init_player(bird)
 	local bird_weapons=split"revolver,shotgun,revolver,shotgun,revolver,flamethrower,boxing_glove,fireworklauncher,machinegun,fireworklauncher,boxing_glove,shotgun,revolver,ringcannon,boxing_glove,assaultrifle,machinegun,sniper,machinegun,gatlinggun,shotgun,sniper,shotgun,assaultrifle,revolver,bazooka"
 	
 	for i=1,2 do
-		p.gunls[i] = copy(guns[bird_weapons[2*n+i] ])
+		azertyuiop.gunls[i] = copy(guns[bird_weapons[2*n+i] ])
 	end
 	
-	update_gun(p)
+	update_gun(azertyuiop)
 end
 
 function player_update()
 	 --damage
-	 p.iframes = max(0,p.iframes-1)
+	 azertyuiop.iframes = max(0,azertyuiop.iframes-1)
 		--movement
-		local dx,dy = p.dx,p.dy
-		local spd = p.spd
+		local dx,dy = azertyuiop.dx,azertyuiop.dy
+		local spd = azertyuiop.spd
 		
 		if (allbtn(BTN_LEFT)) then 
-			p.dx = p.dx - spd
+			azertyuiop.dx = azertyuiop.dx - spd
 			dx1 = dx1 - spd
 		end
 		if (allbtn(BTN_RIGHT)) then 
-			p.dx = p.dx + spd
+			azertyuiop.dx = azertyuiop.dx + spd
 			dx1 = dx1 + spd
 		end
 		if (allbtn(BTN_UP)) then 
-			p.dy = p.dy - spd
+			azertyuiop.dy = azertyuiop.dy - spd
 			dy1 = dy1 - spd
 		end
 		if (allbtn(BTN_DOWN)) then 
-			p.dy = p.dy + spd
+			azertyuiop.dy = azertyuiop.dy + spd
 			dy1 = dy1 + spd
 		end
 		
 		--58
 		
-		p.dx = p.dx * p.fric
-		p.dy = p.dy * p.fric
+		azertyuiop.dx = azertyuiop.dx * azertyuiop.fric
+		azertyuiop.dy = azertyuiop.dy * azertyuiop.fric
 		
   if (abs(dx1)+abs(dy1))>0.1 then
-		dx1 = dx1 * p.fric
-		dy1 = dy1 * p.fric
+		dx1 = dx1 * azertyuiop.fric
+		dy1 = dy1 * azertyuiop.fric
 		end
 		
-		collide(p,0.1)
+		collide(azertyuiop,0.1)
 		
-		p.x = p.x + p.dx
-		p.y = p.y + p.dy
+		azertyuiop.x = azertyuiop.x + azertyuiop.dx
+		azertyuiop.y = azertyuiop.y + azertyuiop.dy
 		
 		
 		--animation
 		
-		if abs(p.dx)+abs(p.dy)>0.75  then
-		 animplayer(p)
+		if abs(azertyuiop.dx)+abs(azertyuiop.dy)>0.75  then
+		 animplayer(azertyuiop)
 		else 
-			p.spriteoffset = 0
+			azertyuiop.spriteoffset = 0
 		end
 		
 		--aiming
 		if keyboard then
 			sprms=76
 			distmin=9999
-			indexmininit={x=p.x-ofsetboss+dx1,y=p.y-ofsetboss+dy1}
+			indexmininit={x=azertyuiop.x-ofsetboss+dx1,y=azertyuiop.y-ofsetboss+dy1}
 			indexmin=indexmininit
 			for e in all(enemies) do
 			 	if loaded(e) and 
-			 	canshoot(p,e) then
-					local dist = dist(p,e)
+			 	canshoot(azertyuiop,e) then
+					local dist = dist(azertyuiop,e)
 					if (distmin>dist) then distmin=dist indexmin=e end
 				end
 			end
@@ -517,40 +517,40 @@ function player_update()
 			ofsetboss = 0
 			if(indexmin.spr == 1) then ofsetboss = 4 end
 
-			p.a = atan2(indexmin.x+ofsetboss-p.x,
-			indexmin.y+ofsetboss-p.y)
+			azertyuiop.a = atan2(indexmin.x+ofsetboss-azertyuiop.x,
+			indexmin.y+ofsetboss-azertyuiop.y)
 			mx=indexmin.x+1+ofsetboss
 			my=indexmin.y+1+ofsetboss
 			if(indexmin==indexmininit) then sprms=57 end
 		else
 			sprms = 127
-			p.a = atan2(mx-p.x,
-			my-p.y)	
+			azertyuiop.a = atan2(mx-azertyuiop.x,
+			my-azertyuiop.y)	
 		end
-		p.flip = isleft(p.a)
+		azertyuiop.flip = isleft(azertyuiop.a)
 		
 		--ammo & life
-		p.life=min(max(0,p.life),p.maxlife)
-		p.gun.ammo=min(max(0,p.gun.ammo),p.gun.maxammo)
+		azertyuiop.life=min(max(0,azertyuiop.life),azertyuiop.maxlife)
+		azertyuiop.gun.ammo=min(max(0,azertyuiop.gun.ammo),azertyuiop.gun.maxammo)
 		
 		--death
-		if p.life <= 0 
+		if azertyuiop.life <= 0 
 		and menu~="death"then
 			sfx(34)
 			music(-1, 300)
 			
 			menu = "death"
 			shake = shake + 9
-			burst_ptc(p.x+4,p.y+4,7)
+			burst_ptc(azertyuiop.x+4,azertyuiop.y+4,7)
 			
 			set_stats()
 		end
 		
 		--shooting
 		if stat(36) ==1 or stat(36) ==-1 or (btnp(BTN_O)) then
-			nextgun(p)
+			nextgun(azertyuiop)
 			--print(p.gun.cooldown,0,0)
-			p.gun.timer = p.gun.cooldown/2
+			azertyuiop.gun.timer = azertyuiop.gun.cooldown/2
 		end
 		
 		
@@ -559,58 +559,58 @@ function player_update()
 		
 		local dofire
 		
-		p.kak:update()
-		p.gun:update()
-		test = p.gun.name
+		azertyuiop.kak:update()
+		azertyuiop.gun:update()
+		test = azertyuiop.gun.name
 		-- not auto
 		if fire and
-		p.gun.timer<=0 and
-		p.gun.ammo > 0 and p.gun.auto == false
+		azertyuiop.gun.timer<=0 and
+		azertyuiop.gun.ammo > 0 and azertyuiop.gun.auto == false
 		then
-			if p.lmbp == true then
+			if azertyuiop.lmbp == true then
 				dofire = true
 				
-				p.lmbp = false
+				azertyuiop.lmbp = false
 			end
 			
 		-- auto
-		elseif fire and p.gun.timer<=0 
-		and p.gun.ammo > 0 then
+		elseif fire and azertyuiop.gun.timer<=0 
+		and azertyuiop.gun.ammo > 0 then
 			dofire = true
 		elseif fire and
-        p.gun.ammo < 1 and
-        p.lmbp == true and
-        p.kak.timer<=0 then
-        coupdekak(p) 
-        p.lmbp = false
+        azertyuiop.gun.ammo < 1 and
+        azertyuiop.lmbp == true and
+        azertyuiop.kak.timer<=0 then
+        coupdekak(azertyuiop) 
+        azertyuiop.lmbp = false
 		end
 		
 		if dofire then
-			make_ptc(p.x+cos(p.a)*6+4, 
-				p.y+sin(p.a)*3+4, rnd(3)+6,7,.7)
+			make_ptc(azertyuiop.x+cos(azertyuiop.a)*6+4, 
+				azertyuiop.y+sin(azertyuiop.a)*3+4, rnd(3)+6,7,.7)
 				
-			p.gun.ammo = p.gun.ammo - 1
-			p.gun:fire(p.x+4,p.y+4,p.a)
+			azertyuiop.gun.ammo = azertyuiop.gun.ammo - 1
+			azertyuiop.gun:fire(azertyuiop.x+4,azertyuiop.y+4,azertyuiop.a)
 		end
 		
 		-- if mleft not pressed 
 		if not fire then
-			p.lmbp = true
+			azertyuiop.lmbp = true
 		end
 		
 		--begin boss
 		local w3=128*(wl-1)
 		
-		if wagon_n==tl and p.x>w3 
+		if wagon_n==tl and azertyuiop.x>w3 
 		and cam_follow_player 
 		and not is_boss then
 			is_boss = true
 			begin_boss()
-			p.x = w3+8
+			azertyuiop.x = w3+8
 		end
 		
 		--next wagon
-		if p.x>128*wl then
+		if azertyuiop.x>128*wl then
 			random = {}
 			
 			wagon_n = wagon_n + 1
@@ -625,57 +625,57 @@ function player_update()
 			enemies = {}
 			parcourmap()
 			--teleport players
-			p.x = p.x - 128*wl
-			p.x = max(p.x, 0)
+			azertyuiop.x = azertyuiop.x - 128*wl
+			azertyuiop.x = max(azertyuiop.x, 0)
 		end
 		for e in all(enemies)do
 			
 			if touches_rect(
-			p.x+4,p.y+4,
+			azertyuiop.x+4,azertyuiop.y+4,
 			e.x+1,e.y+1,e.x+7,e.y+7) then
 				
-				if (p.iframes == 0) then
+				if (azertyuiop.iframes == 0) then
 					sfx(35)
 					if(shake<=2)then shake = shake + 2 end
 					if e.spr ~= 126 then
-						p.life = p.life - 1+(degaplus*2)
+						azertyuiop.life = azertyuiop.life - 1+(degaplus*2)
 					else 
-						p.life = p.life - 1+degaplus
+						azertyuiop.life = azertyuiop.life - 1+degaplus
 					end
-					p.iframes = 30
+					azertyuiop.iframes = 30
 					
 					if e.spr == 109 then
-					 p.life = p.life + 1
+					 azertyuiop.life = azertyuiop.life + 1
 					 killbarelle(e)
-					 p.iframes = 0
+					 azertyuiop.iframes = 0
 					end
 				end
-				knockback_player(p,e)
+				knockback_player(azertyuiop,e)
 			
 			end
 		end
 end
 
 function draw_player()
-	if (p.iframes%5) == 0  then
-		local x=flr(p.x) + cos(p.a)*6 +0
-		local y=flr(p.y) + sin(p.a)*3 +0
+	if (azertyuiop.iframes%5) == 0  then
+		local x=flr(azertyuiop.x) + cos(azertyuiop.a)*6 +0
+		local y=flr(azertyuiop.y) + sin(azertyuiop.a)*3 +0
 		
-		if p.gun.name=="sniper" then
-			local c,s=cos(p.a),sin(p.a)
+		if azertyuiop.gun.name=="sniper" then
+			local c,s=cos(azertyuiop.a),sin(azertyuiop.a)
 			line(
 			x+4+c*6,
 			y+4+s*6,
-			p.x+c*128,
-			p.y+s*128,8)
+			azertyuiop.x+c*128,
+			azertyuiop.y+s*128,8)
 		end
-		spr(p.gun.spr,x,y,1,1, p.flip)
+		spr(azertyuiop.gun.spr,x,y,1,1, azertyuiop.flip)
 		
 		
 		palt(0,false)
 		palt(1,true)
 		
-		spr(p.spr,p.x,p.y+p.spriteoffset,1,1, p.flip)
+		spr(azertyuiop.spr,azertyuiop.x,azertyuiop.y+azertyuiop.spriteoffset,1,1, azertyuiop.flip)
 		
 		palt()
 	end
@@ -832,8 +832,8 @@ function make_gun(args,fire)
 		spd,3,s,dmg,is_enemy,lifspa,palette)
 		lifspa=nil
 		gun.timer = gun.cooldown
-		p.dx = p.dx - cos(dir)*gun.knockback
-		p.dy = p.dy - sin(dir)*gun.knockback
+		azertyuiop.dx = azertyuiop.dx - cos(dir)*gun.knockback
+		azertyuiop.dy = azertyuiop.dy - sin(dir)*gun.knockback
 	end
 	
 	gun.update=function(gun)
@@ -886,7 +886,7 @@ guns = {
   for i=1,7 do
 			gun:shoot(x,y,dir)
 		end
-		p.iframes,gun.ammo = 9,gun.maxammo
+		azertyuiop.iframes,gun.ammo = 9,gun.maxammo
 		end
  ),
 	
@@ -1069,19 +1069,19 @@ function update_bullet(b)
 	debug=""
 	if b.is_enemy then
 		
-		local x2 = p.x+p.hx+p.hw
-		local y2 = p.y+p.hx+p.hw 
+		local x2 = azertyuiop.x+azertyuiop.hx+azertyuiop.hw
+		local y2 = azertyuiop.y+azertyuiop.hx+azertyuiop.hw 
 		if touches_rect(bx,by,
-		p.x+p.hx, p.y+p.hy,
+		azertyuiop.x+azertyuiop.hx, azertyuiop.y+azertyuiop.hy,
 		x2,y2) then
 			
-			if p.iframes == 0 then
-				p.life = p.life - b.dmg 
-				p.iframes = 30
+			if azertyuiop.iframes == 0 then
+				azertyuiop.life = azertyuiop.life - b.dmg 
+				azertyuiop.iframes = 30
 				sfx(35)
 			end
 			if(shake<=4)then shake = shake + 4 end
-			knockback_player(p,b)
+			knockback_player(azertyuiop,b)
 			make_ptc(bx,by,rnd(4)+6,7,.8)
 			b.destroy_flag = true
 			
@@ -1163,7 +1163,7 @@ end
 
 function draw_bullet(b)
 	pal(split(b.palette))
-	spr(b.spr, b.x-4, b.y-4,1,1, p.flip)
+	spr(b.spr, b.x-4, b.y-4,1,1, azertyuiop.flip)
 	pal()
 end
 
@@ -1522,7 +1522,7 @@ function parcourmap()
  if(wagon_n==0)then x1=16 end
  	for x=x1,16*(wl-1) do
   	for y=2,12 do
-   	if x>3 or p.y-1000>y*8 or p.y+1000<y*8 then
+   	if x>3 or azertyuiop.y-1000>y*8 or azertyuiop.y+1000<y*8 then
     	if mget(x,y)==109 then
    	  mset(x,y,39)
    	  if rnd(4)>3 then
@@ -1693,7 +1693,7 @@ function update_enemy(e)
 			,0)
 			
 			if i.gun.timer<=0 and 
-			(canshoot(i,p) or i.spr==1)then
+			(canshoot(i,azertyuiop) or i.spr==1)then
 				
 				i.gun:fire(i.x+4,i.y+4,i.a)
 			end
@@ -1702,7 +1702,7 @@ function update_enemy(e)
 			end
 			collide(i,0.1)
 			
-			i.pangle=atan2(p.x-i.x,p.y-i.y)
+			i.pangle=atan2(azertyuiop.x-i.x,azertyuiop.y-i.y)
 			if not (i.spr== 109) then
 				i.flip=isleft(i.pangle)
 			end
@@ -1779,7 +1779,7 @@ function canshoot(e,pl)
 	local y = sin(angle) 
 	local dist = dist(e,pl)
 	
-	if (abs(dist)<e.agro and abs(pl.x-e.x)<128) or e==p then
+	if (abs(dist)<e.agro and abs(pl.x-e.x)<128) or e==azertyuiop then
 		return cansee(e,angle,x,y,dist)
 	elseif abs(dist)<e.seerange and abs(dist)>e.agro and e.chase and cansee(e,angle,x,y,dist) then
   o= e.dx+e.dy
@@ -1806,7 +1806,7 @@ function cansee(e,angle,x,y,dist)
 	add(checker,{x=e.x+x*i*8,y=e.y+y*i*8})  
 	 if is_solid(checker[#checker].x+4,checker[#checker].y+4) then
 	 	delchecker()
-	 	if (e~=p) then e.gun.timer = e.gun.cooldown/2 end
+	 	if (e~=azertyuiop) then e.gun.timer = e.gun.cooldown/2 end
 	 return false 
 	 end
 	end
@@ -2249,7 +2249,7 @@ function update_drops()
 		d.cooldown=max(0,d.cooldown-1)
 		
 		local touches = touches_rect(
-		p.x+4,p.y+4,
+		azertyuiop.x+4,azertyuiop.y+4,
 		d.x,d.y,d.x+8,d.y+8)
 		
 		if(not touches)then d.touched=false end
@@ -2261,8 +2261,8 @@ function update_drops()
 			
 			if d.type=="ammo" then
 				d.destroy = true
-				local q = flr(d.q*p.gun.maxammo)
-				p.gun.ammo = p.gun.ammo + q
+				local q = flr(d.q*azertyuiop.gun.maxammo)
+				azertyuiop.gun.ammo = azertyuiop.gun.ammo + q
 				
 				do_ptc=true
 				col=9
@@ -2272,7 +2272,7 @@ function update_drops()
 				
 			elseif d.type=="health"then
 				d.destroy = true
-				p.life = p.life + d.q
+				azertyuiop.life = azertyuiop.life + d.q
 				
 				do_ptc=true
 				col=8
@@ -2290,8 +2290,8 @@ function update_drops()
 				col=6
 				txt=d.q.name
 				
-				p.gunls[p.gunn],d.q=d.q,p.gunls[p.gunn]
-				update_gun(p)
+				azertyuiop.gunls[azertyuiop.gunn],d.q=d.q,azertyuiop.gunls[azertyuiop.gunn]
+				update_gun(azertyuiop)
 				d.spr = d.q.spr
 				
 				sfx(36)
@@ -2449,7 +2449,7 @@ function draw_death_menu(m)
 		if(t()%2<1)then txtcol = 9 end
 	end
 	
-	local x,y = p.x+4,p.y+4
+	local x,y = azertyuiop.x+4,azertyuiop.y+4
 	local c = m.circt
 	circfill(x,y,c    ,c4)
 	circfill(x,y,c*.75,c3)

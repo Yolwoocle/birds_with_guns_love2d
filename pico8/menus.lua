@@ -4,6 +4,8 @@ local _menu_line_spacing = 2
 local _menu_padding = 6
 local _menu_width = 82
 
+local Options = require "lib.options.options" 
+
 function _init_menus()
     __paused = false
 
@@ -29,8 +31,10 @@ function _new_menu_item(label, callback, params)
     params = params or {}
 
     local item = {
+        original_label = label,
         label = label,
-        callback = callback
+        callback = callback,
+        init = params.init or function() return label end,
     }
     item.permanent = param(params.permanent, false)
 
@@ -43,18 +47,19 @@ function __reset_menus()
         options = _new_menu(),
     }
 
-    menuitem(1, "continue", function()
+    menuitem(1, "{menu_continue}", function()
         _unpause()
     end)
-    menuitem(2, "restart", function()
+    menuitem(2, "{menu_restart}", function()
         run()
     end)
-    menuitem(3, "options", function()
+    menuitem(3, "{menu_options}", function()
         _set_menu("options")
     end)
 
-    -- menuitem({"options", 1}, "lolol", function()
-    -- end)
+    menuitem({"options", 1}, "sound:on", function()
+        
+    end)
 end
 
 
@@ -174,6 +179,12 @@ function _set_menu(name)
 
     __current_selection_index = 1
 
+    for i=1, #__current_menu.items do
+        local val = __current_menu.items[i].init()
+        __current_menu.items[i].label = val
+    end
+
+    -- Music effects
     __old_lowpass_value = __sfxeffects["lowpass"]
     sfxeffect("lowpass", 0.003)
 

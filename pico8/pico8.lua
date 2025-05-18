@@ -54,33 +54,14 @@ function pico8.init()
     __camera_x = 0
     __camera_y = 0
 
-    __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_SYMBOLS)
+    _load_p8scii()
+    __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", P8SCII_SYMBOLS)
 
     local font_height_ratio = FONT_HEIGHT/__font_normal:getHeight()
     __font_normal:setLineHeight(font_height_ratio)
+    
+    _init_pinball_font(font_height_ratio)
 
-    ---[[[[pinball font]]]]
-    local img = love.graphics.newImage("pico8/assets/pico8_font.png")
-    local img_data = love.graphics.readbackTexture(img)
-    local img_pinball = love.graphics.newCanvas(img:getWidth() * 2, img:getHeight() * 2, { dpiscale = 1 })
-    love.graphics.setCanvas(img_pinball) 
-
-    for ix = 0, img:getWidth() - 1 do
-        for iy = 0, img:getHeight() - 1 do
-            local pixel = { img_data:getPixel(ix, iy) }
-            love.graphics.setColor(pixel)
-            if iy == 0 and (pixel[1] > 0.8) and (pixel[2] == 0) and (pixel[3] == 0) then
-                love.graphics.rectangle("fill", ix * 2, 0, 2, img:getHeight() * 2)
-            else
-                love.graphics.rectangle("fill", ix * 2, iy * 2, 1, 1)
-            end
-        end
-    end
-    love.graphics.setCanvas()
-
-    __font_pinball = love.graphics.newImageFont(love.graphics.readbackTexture(img_pinball), FONT_SYMBOLS)
-    __font_pinball:setLineHeight(font_height_ratio)
-    ---[[[[]]]]
     __font = __font_normal
 
     __input_state = {}
@@ -98,6 +79,44 @@ function pico8.init()
     _init_menus()
 
     pico8._init()
+
+    
+    local function wide(t, x, y, col, pre)
+        --credit to yolwoocle uwu
+        t1 =  "                ! #$%&'()  ,-./[12345[7[9:;<=>?([[c[efc[ij[l[[([([st[[[&yz[\\]'_`[[c[efc[ij[l[[([([st[[[&yz{|}~"
+        t2 = "                !\"=$  '()*+,-./0123]5678]:;<=>?@abcdefghijklmnopqrstuvwx]z[\\]^_`abcdefghijklmnopqrstuvwx]z{|} "
+        n1, n2 = "", ""
+        pre = pre or ""
+
+        for i = 1, #t do
+            local char = sub(t, i, i)
+            local c = ord(char) - 16
+            n1 = n1 .. sub(t1, c, c) .. " "
+            n2 = n2 .. sub(t2, c, c) .. " "
+        end
+
+        if (col ~= nil) then color(col) end
+        print_(pre .. n1, x, y)
+        print_(pre .. n2, x + 1, y)
+    end
+
+    local canvastmp = love.graphics.newCanvas(3000, __font:getHeight(), {dpiscale = 1})
+    love.graphics.setCanvas(canvastmp)
+    love.graphics.clear()
+    love.graphics.setColor(1, 1, 1, 1)
+    -- wide(FONT_SYMBOLS, 0, 0, 1)
+    for i=12,127 do
+        local c = sub(P8SCII_SYMBOLS, i, i)
+        if i <= 127 then
+            wide(c, (i-1)*9, 0, 7)
+        else
+            print_(c, (i-1)*9, 0, 7)
+        end
+        line((i-1)*9-1, 0, (i-1)*9-1, 10, 15)
+    end
+    love.graphics.setCanvas()
+
+    local imgdata, imgpng = _save_canvas_as_file(canvastmp, "fontlol.png")
 end
 
 __init = function()

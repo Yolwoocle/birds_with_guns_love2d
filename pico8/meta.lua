@@ -24,3 +24,8 @@ t = time
 function printh(...)
     -- TODO
 end
+
+function quit(...)
+    
+    love.event.quit() 
+end

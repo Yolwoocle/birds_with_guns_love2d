@@ -1,7 +1,18 @@
+--[[
+    Notes to translators:
+
+    The screen is very small, so space is very limited. Prefer short phrases that work well in-context.
+    You can use gaming terms if they are already established ("checkpoint", "game over", etc) 
+--]]
+
 return {
     menu_input_mode = "mode:",
     menu_input_mode_keyboard = "keyboard",
     menu_input_mode_mouse_keys = "mouse+keys",
+
+    menu_continue = "continue",
+    menu_restart = "restart",
+    menu_options = "options",
 
     menu_main = "title screen",
     menu_main_random = "random",

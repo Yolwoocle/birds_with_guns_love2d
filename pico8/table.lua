@@ -22,7 +22,7 @@ function del(list, value)
 end
 
 function all(t)
-    -- I have not checked if this accurate to the PICO-8 version.
+    -- I have not checked if this accurate to the PICO-8 version, but it seems to be.
     local i = 0
     local n = #t
     return function ()
