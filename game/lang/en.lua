@@ -10,9 +10,16 @@ return {
     menu_input_mode_keyboard = "keyboard",
     menu_input_mode_mouse_keys = "mouse+keys",
 
+    menu_on = "on",
+    menu_off = "off",
+
     menu_continue = "continue",
     menu_restart = "restart",
     menu_options = "options",
+
+    menu_sound_on = "sound",
+    menu_volume = "volume",
+    menu_fullscreen = "fullscreen",
 
     menu_main = "title screen",
     menu_main_random = "random",

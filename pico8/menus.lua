@@ -4,7 +4,7 @@ local _menu_line_spacing = 2
 local _menu_padding = 6
 local _menu_width = 82
 
-local Options = require "lib.options.options" 
+local Options = (require "lib.options.options"):new()
 
 function _init_menus()
     __paused = false
@@ -30,9 +30,22 @@ end
 function _new_menu_item(label, callback, params)
     params = params or {}
 
+    local label_func
+    local label_str
+    if type(label) == "string" then
+        label_func = function() return label end
+        label_str = label
+    elseif type(label) == "function" then
+        label_func = label
+        label_str = label()
+    else
+        assert(false, "Label param is neither string nor function")
+    end
+
     local item = {
-        original_label = label,
-        label = label,
+        original_label = label_str,
+        label = label_str,
+        label_func = label_func,
         callback = callback,
         init = params.init or function() return label end,
     }
@@ -42,6 +55,38 @@ function _new_menu_item(label, callback, params)
 end
 
 function __reset_menus()
+    local function toggle_labeller(label, option_name)
+        return function() 
+            return label.. ":" .. (Options:get(option_name) and "on" or "off")     
+        end
+    end
+    local function toggle_setter(option_name)
+        return function()
+            Options:set(option_name, not Options:get(option_name))
+        end
+    end
+
+    local function slider_labeller(label, option_name, steps)
+        steps = steps or 8
+        return function() 
+            local v = round(Options:get(option_name) * steps)
+            return label.. ": " .. (repeat_string("▮", v) .. repeat_string("-", steps - v))
+        end
+    end
+    local function slider_setter(option_name, steps)
+        steps = steps or 8
+        return function(bitfield)
+            local left = bit.band(1, bitfield) > 0
+            local right = bit.band(2, bitfield) > 0
+            if left then
+                Options:set(option_name, mid(Options:get(option_name) - 1/steps, 0, 1))
+            end
+            if right then
+                Options:set(option_name, mid(Options:get(option_name) + 1/steps, 0, 1))
+            end
+        end
+    end
+
     __menus = {
         pause = _new_menu(),
         options = _new_menu(),
@@ -57,9 +102,21 @@ function __reset_menus()
         _set_menu("options")
     end)
 
-    menuitem({"options", 1}, "sound:on", function()
+    menuitem({"options", 1}, "back", function()
         
     end)
+    menuitem({"options", 2}, 
+        toggle_labeller("{menu_sound_on}", "sound_on"), 
+        toggle_setter("sound_on")
+    )
+    menuitem({"options", 3}, 
+        slider_labeller("{menu_volume}", "volume"), 
+        slider_setter("volume")
+    )
+    menuitem({"options", 4}, 
+        toggle_labeller("{menu_fullscreen}", "fullscreen"), 
+        toggle_setter("fullscreen")
+    )
 end
 
 
@@ -83,6 +140,7 @@ local function _click_item()
             bit.lshift(1, BTN_PAUSE)
     end
 
+    print(bitfield)
     click_func(bitfield)
 end
 
@@ -94,12 +152,16 @@ function _update_menus(dt)
         elseif btnp(BTN_DOWN) then
             __current_selection_index = mod1(__current_selection_index + 1, #__current_menu.items)
 
-        elseif btnp(BTN_O) or btnp(BTN_X) then
+        elseif btnp(BTN_O) or btnp(BTN_X) or btnp(BTN_LEFT) or btnp(BTN_RIGHT) then
             if __current_menu.items[__current_selection_index] then
                 _click_item() 
             end
         end
     end
+
+    for item in all(__current_menu.items) do
+        item.label = item.label_func() or ""
+    end 
 end
 
 local function _get_menu_height()
@@ -202,6 +264,7 @@ function menuitem(index, label, callback)
         menu_name = index[1]
         i = index[2]
     end
+    assert(__menus[menu_name], "Menu '"..tostr(menu_name).."' doesn't exist")
 
     if type(i) == "number" then
         table.insert(__menus[menu_name].items, i, _new_menu_item(

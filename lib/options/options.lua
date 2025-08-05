@@ -1,4 +1,4 @@
--- require "scripts.util"
+require "util"
 -- require "scripts.meta.constants"
 local Class = require "lib.options.class"
 local Files = (require "lib.options.files"):new()
@@ -13,6 +13,7 @@ function OptionsManager:init()
 
         sound_on = true,
 		volume = 1.0,
+		fullscreen = false,
 	}
 	self.setters = {
 		sound_on = function(value) 
@@ -23,7 +24,12 @@ function OptionsManager:init()
 			end
 		end,
 		volume = function(value) 
-			love.audio.setVolume(value)
+			if self:get("sound_on") then
+				love.audio.setVolume(value)
+			end
+		end,
+		fullscreen = function(value) 
+			love.window.setFullscreen(value)		
 		end,
 	}
 

@@ -13,6 +13,8 @@ Needed
 - to fix: weird texture bleed with bug enemies
 
 Nice to have
+- screenshotting
+- capturing GIFs 
 - localization (french, japanese?, chinese?)
 - local co-op
 - online co-op?
