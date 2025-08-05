@@ -9,6 +9,17 @@ function _init_lang()
     __current_lang = languages[__current_lang_name]
 end
 
+function get_fallback_lang()
+    return __fallback_lang_name
+end
+
+function set_lang(lang)
+    assert(languages[lang], "Language '"..tostring(lang).."' doesn't exist")
+
+    __current_lang_name = lang
+    __current_lang = languages[__current_lang_name]
+end
+
 function tr_text(id)
     local txt = __current_lang[id]
     if txt then

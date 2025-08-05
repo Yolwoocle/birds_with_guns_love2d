@@ -6,6 +6,11 @@
 --]]
 
 return {
+    lang_en = "english", 
+    lang_fr = "français", 
+
+    menu_back = "back",
+
     menu_input_mode = "mode:",
     menu_input_mode_keyboard = "keyboard",
     menu_input_mode_mouse_keys = "mouse+keys",

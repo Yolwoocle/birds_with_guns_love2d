@@ -16,6 +16,13 @@ function OptionsManager:init()
 		fullscreen = false,
 	}
 	self.setters = {
+		language = function(value)
+			if value == "default" then
+				set_lang(get_fallback_lang()) -- TODO get user lang instead
+			else
+				set_lang(value)
+			end
+		end,
 		sound_on = function(value) 
 			if value then
 				love.audio.setVolume(self:get("volume"))

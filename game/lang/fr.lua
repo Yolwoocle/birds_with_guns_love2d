@@ -1,11 +1,23 @@
 return {
+    lang_en = "english", 
+    lang_fr = "français", 
+
+    menu_back = "retour",
+
     menu_input_mode = "mode:",
     menu_input_mode_keyboard = "clavier",
     menu_input_mode_mouse_keys = "souris+clavier",
 
+    menu_on = "oui",
+    menu_off = "non",
+
     menu_continue = "continuer",
     menu_restart = "redémarrer",
     menu_options = "options",
+
+    menu_sound_on = "son",
+    menu_volume = "volume",
+    menu_fullscreen = "plein écran",
 
     menu_main = "écran titre",
     menu_main_random = "aléatoire",

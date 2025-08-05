@@ -87,9 +87,21 @@ function __reset_menus()
         end
     end
 
+    local function lang_labeller(lang)
+        return function() 
+            return "{lang_"..lang.."} " .. (Options:get("language") == lang and "★" or " ")     
+        end
+    end
+    local function lang_setter(lang)
+        return function(bitfield)
+            Options:set("language", lang)
+        end
+    end
+
     __menus = {
         pause = _new_menu(),
         options = _new_menu(),
+        language = _new_menu(),
     }
 
     menuitem(1, "{menu_continue}", function()
@@ -102,20 +114,35 @@ function __reset_menus()
         _set_menu("options")
     end)
 
-    menuitem({"options", 1}, "back", function()
+    menuitem({"options", 1}, "{menu_back}", function()
         
     end)
     menuitem({"options", 2}, 
-        toggle_labeller("{menu_sound_on}", "sound_on"), 
-        toggle_setter("sound_on")
-    )
+    toggle_labeller("{menu_sound_on}", "sound_on"), 
+    toggle_setter("sound_on")
+)
     menuitem({"options", 3}, 
-        slider_labeller("{menu_volume}", "volume"), 
+    slider_labeller("{menu_volume}", "volume"), 
         slider_setter("volume")
     )
     menuitem({"options", 4}, 
-        toggle_labeller("{menu_fullscreen}", "fullscreen"), 
+    toggle_labeller("{menu_fullscreen}", "fullscreen"), 
         toggle_setter("fullscreen")
+    )
+    menuitem({"options", 4}, "{menu_language}", function()
+        _set_menu("language")
+    end)
+    
+    menuitem({"language", 1}, "{menu_back}", function()
+        
+    end)
+    menuitem({"language", 2}, 
+        lang_labeller("en"), 
+        lang_setter("en")
+    )
+    menuitem({"language", 3}, 
+        lang_labeller("fr"), 
+        lang_setter("fr")
     )
 end
 
