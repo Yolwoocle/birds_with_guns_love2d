@@ -122,5 +122,5 @@ end
 function get_text_width(text, font)
 	local text = text or ' '
 	local font = font or love.graphics.getFont()
-	return font:getWidth(text)
+	return font:getWidth(_parse_text(text))
 end

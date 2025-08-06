@@ -1,12 +1,14 @@
 return {
     lang_en = "english", 
     lang_fr = "français", 
+    lang_zh = "中文", 
 
     menu_back = "retour",
 
     menu_input_mode = "mode:",
     menu_input_mode_keyboard = "clavier",
     menu_input_mode_mouse_keys = "souris+clavier",
+    menu_input_mode_gamepad = "manette",
 
     menu_on = "oui",
     menu_off = "non",
@@ -14,6 +16,9 @@ return {
     menu_continue = "continuer",
     menu_restart = "redémarrer",
     menu_options = "options",
+    menu_language = "langue",
+    menu_controls = "contrôles",
+    menu_quit = "quitter",
 
     menu_sound_on = "son",
     menu_volume = "volume",
@@ -27,6 +32,10 @@ return {
     menu_change_bird = "changer d'oiseau",
 
     action_move = "bouger",
+    action_left = "gauche",
+    action_right = "droite",
+    action_up = "haut",
+    action_down = "bas",
     action_shoot = "tirer",
     action_change_weapon = "changer d'arme",
 

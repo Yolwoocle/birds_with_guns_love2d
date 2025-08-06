@@ -6,14 +6,20 @@
 --]]
 
 return {
+    ["$metadata"] = {
+        font = "latin",
+        height = 5,
+    },
     lang_en = "english", 
     lang_fr = "français", 
+    lang_zh = "中文", 
 
     menu_back = "back",
 
     menu_input_mode = "mode:",
     menu_input_mode_keyboard = "keyboard",
     menu_input_mode_mouse_keys = "mouse+keys",
+    menu_input_mode_gamepad = "gamepad",
 
     menu_on = "on",
     menu_off = "off",
@@ -21,6 +27,9 @@ return {
     menu_continue = "continue",
     menu_restart = "restart",
     menu_options = "options",
+    menu_language = "language",
+    menu_controls = "controls",
+    menu_quit = "quit",
 
     menu_sound_on = "sound",
     menu_volume = "volume",
@@ -34,6 +43,10 @@ return {
     menu_change_bird = "change bird",
 
     action_move = "move",
+    action_left = "left",
+    action_right = "right",
+    action_up = "up",
+    action_down = "down",
     action_shoot = "shoot",
     action_change_weapon = "change weapon",
 

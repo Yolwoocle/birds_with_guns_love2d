@@ -860,7 +860,7 @@ function make_gun(args, fire)
 	--todo:not have 3000 args
 	local gun = {
 		name = name_,
-		displayname = tr_text("gun_"..name_) or "",
+		displayname = "gun_"..name_,
 		spr = sprr,
 		spd = spd,
 		oa = oa, --offset angle in [0,1[
@@ -2102,7 +2102,7 @@ function make_main_menu()
 			sh = 2,
 
 			name = names[i],
-			displayname = tr_text("bird_"..names[i]),
+			displayname = "bird_"..names[i],
 			active = false,
 		})
 	end
@@ -2125,7 +2125,7 @@ function make_main_menu()
 			sh = 1,
 
 			name = name,
-			displayname = tr_text("menu_main_"..name) or "",
+			displayname = "menu_main_"..name,
 			active = false,
 		}
 	end
@@ -2218,8 +2218,8 @@ function draw_main_menu(m)
 	local sel = m.buttons[m.sel]
 	rectfill(
 		2, 93 + oy,
-		2 + #(sel.displayname or sel.name) * 8, 102 + oy, 1)
-	wide((sel.displayname or sel.name), 4, 95 + oy, 7)
+		2 + #(tr_text(sel.displayname) or sel.name) * 8, 102 + oy, 1)
+	wide((tr_text(sel.displayname) or sel.name), 4, 95 + oy, 7)
 	palt()
 
 	-- encaged bird
@@ -2392,7 +2392,7 @@ function update_drops()
 
 					do_ptc = true
 					col = 6
-					txt = d.q.displayname
+					txt = tr_text(d.q.displayname)
 
 					player.gunls[player.gunn], d.q = d.q, player.gunls[player.gunn]
 					update_gun(player)

@@ -21,3 +21,9 @@ function repeat_string(string, amount)
 	end
 	return s
 end
+
+function get_text_width(text, font)
+	text = text or ' '
+	font = font or love.graphics.getFont()
+	return font:getWidth(text)
+end

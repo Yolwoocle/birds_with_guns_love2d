@@ -57,20 +57,26 @@ function OptionsManager:get(name)
 	return self.options[name]
 end
 
-function OptionsManager:set(name, val)
+function OptionsManager:set(name, val, do_not_update_file)
+	do_not_update_file = param(do_not_update_file, false)
 	self.options[name] = val
 	if self.setters[name] then
 		self.setters[name](val)
 	end
-	self:update_options_file()
+
+	if not do_not_update_file then
+		self:update_options_file()
+	end
 end
 
 function OptionsManager:toggle(name)
 	self:set(name, not self.options[name])
 end
 
-function OptionsManager:update_volume()
-	love.audio.setVolume(self:get("sound_on") and self:get("volume") or 0.0)
+function OptionsManager:update_options()
+	for k, v in pairs(self.options) do
+		self:set(k, self:get(k), true)
+	end
 end
 
-return OptionsManager
+return OptionsManager:new()

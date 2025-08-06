@@ -1,9 +1,6 @@
 Needed
-- audio sounds are watered down // https://github.com/love2d/love/issues/2181
-    - solution: convert files to stereo
 - export the sounds multiple times to create variation (esp. noisy sounds) 
 - music flags (looping, etc)
-- options menu 
 - gamepad support
 - control remapping
 - dual stick aiming
@@ -11,15 +8,20 @@ Needed
 - localization: correctly support varying string lengths in the game (centered text, no overflow, etc)
 - localization: chinese and asian languages
 - to fix: weird texture bleed with bug enemies
+- to fix: pressing right on pause menu crashes the game
+- to fix: wide font broken
 
 Nice to have
 - screenshotting
 - capturing GIFs 
-- localization (french, japanese?, chinese?)
 - local co-op
 - online co-op?
+- translating
 
 Done
+- options menu 
+- different locales
+- audio sounds are watered down // https://github.com/love2d/love/issues/2181
 - pause menu 
 - palette problem (see birds on selection screen)
 - music should reset when restarting game

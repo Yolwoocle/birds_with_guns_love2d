@@ -12,6 +12,7 @@ require "pico8.table"
 require "pico8.map"
 require "pico8.audio"
 require "pico8.menus"
+local Options = require "lib.options.options"
 
 local pico8 = {}
 
@@ -117,6 +118,8 @@ function pico8.init()
     love.graphics.setCanvas()
 
     local imgdata, imgpng = _save_canvas_as_file(canvastmp, "fontlol.png")
+
+    Options:update_options()
 end
 
 __init = function()

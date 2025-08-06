@@ -26,6 +26,5 @@ function printh(...)
 end
 
 function quit(...)
-    
     love.event.quit() 
 end
