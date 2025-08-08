@@ -2,6 +2,7 @@ local languages = {
     en = require "game.lang.en",
     fr = require "game.lang.fr",
     zh = require "game.lang.zh",
+    ja = require "game.lang.ja",
 }
 
 function _init_lang()
@@ -12,6 +13,10 @@ end
 
 function get_fallback_lang()
     return __fallback_lang_name
+end
+
+function get_lang_metadata()
+    return __current_lang["$metadata"] or {}
 end
 
 function set_lang(lang)

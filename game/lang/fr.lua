@@ -1,7 +1,13 @@
 return {
+    ["$metadata"] = {
+        font = "normal",
+        menu_spacing = 3,
+        text_height = 8,
+    },
     lang_en = "english", 
     lang_fr = "français", 
     lang_zh = "中文", 
+    lang_ja = "日本語",
 
     menu_back = "retour",
 

@@ -1,3 +1,18 @@
+local utf8 = require "lib.utf8_fixes.utf8_fixes"
+local function remove_repeats(str, start_offset)
+    start_offset = start_offset or 0
+    seen = {}
+    output = utf8.sub(str, 1, start_offset)
+    for i=start_offset+1, utf8.len(str) do
+        local c = utf8.sub(str, i, i)
+        if not seen[c] then
+            seen[c] = true
+            output = output..c
+        end
+    end
+    return output
+end
+
 BTN_LEFT = 0
 BTN_RIGHT = 1
 BTN_UP = 2
@@ -43,16 +58,38 @@ P8SCII_SYMBOLS =
     "○█▒🐱⬇░✽●♥☉웃⌂⬅😐♪🅾◆…➡★⧗⬆ˇ∧❎▤▥".. 
     "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれ".. 
     "ろわをんっゃゅょアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメ"..
-    "モヤユヨラリルレロワヲンッャュョ◜◝"..
+    "モヤユヨラリルレロワヲンッャュョ◜◝"
+
+LATIN_EXTENDED_SYMBOLS = 
     "¡¿"..
     "àáâãäåąæçćèéêëęìíîïłðñńòóôõöøùúûüśýźżœþß".. 
-    "ÀÁÂÃÄÅĄÆÇĆÈÉÊËĘÌÍÎÏŁÐÑŃÒÓÔÕÖØÙÚÛÜŚÝŹŻŒÞÿŸЁ"..
+    "ÀÁÂÃÄÅĄÆÇĆÈÉÊËĘÌÍÎÏŁÐÑŃÒÓÔÕÖØÙÚÛÜŚÝŹŻŒÞÿŸЁ"
+
+SIMPLIFIED_CHINESE_SYMBOLS = 
     "中文返回模式键盘鼠标手柄开关继续重新始选项语言控制退出音效量全屏题画面随机试再玩一次"..
     "更换鸟类移动左右上下射击切武器游戏作编程美术乐鸽子鸭麻雀鹦鹉巨嘴火烈老鹰海鸥鸵企鹅松"..
     "鸦鸡轮枪烟花发拳套箭筒焰喷光环炮霰弹突步狙加特林药生命值车厢时间杀没了结束恭喜在按住"..
     "解锁困难你是认真的吗这个本来就不该能通"
 
-FONT_HEIGHT = 6 -- 5 pixel high character + accounting for 1 pixel spacing below
+JAPANESE_SYMBOLS = 
+    "英語フランス中国日本戻るモードキボマウゲムパッオ続け再開設定言操作終了音声量全画面タ"..
+    "イトルダリもう一度鳥を変え移動左右上下攻撃武器更制コア楽ハヒズメシミゴワカチョペギケ".. 
+    "ニバ花火ャクグ炎放射砲ガサナ弾薬体力車両時間破切れおめでと長押し解除嘘ょこの無理なは".. 
+    "ずだった"
+
+FONT_NORMAL_CHARSET = 
+    P8SCII_SYMBOLS..
+    LATIN_EXTENDED_SYMBOLS..
+    "中文日本語" -- characters to display correctly languages 
+
+P8SCII_EXTENDED_SYMBOLS = remove_repeats(
+    P8SCII_SYMBOLS..
+    LATIN_EXTENDED_SYMBOLS..
+    SIMPLIFIED_CHINESE_SYMBOLS..
+    JAPANESE_SYMBOLS
+, 16)
+
+BASE_TEXT_HEIGHT = 6
 
 LAYER_GAME = 1
 LAYER_MENU = 2

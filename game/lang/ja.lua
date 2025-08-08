@@ -1,14 +1,13 @@
-import re
-lua_table='''
 return {
     ["$metadata"] = {
-        font = "latin",
-        menu_spacing = 2,
+        font = "japanese",
+        menu_spacing = 5,
+        text_height = 11,
     },
-    lang_en = "英語", 
-    lang_fr = "フランス語", 
-    lang_zh = "中国語", 
-    日本語
+    lang_en = "english", 
+    lang_fr = "français", 
+    lang_zh = "中文", 
+    lang_ja = "日本語",
 
     menu_back = "戻る",
 
@@ -88,13 +87,3 @@ return {
     game_win_subtext = "タイトル画面で\n'i'を長押しで\nハードモード解除",
     game_win_subtext_hard = "嘘でしょ！？\nこのモード\n無理なはずだった！",
 }
-
-'''
-chinese_chars = re.findall(r'[\u1100-\u9fff]', lua_table)
-unique_chars = []
-seen = set()
-for char in chinese_chars:
-    if char not in seen:
-        seen.add(char)
-        unique_chars.append(char)
-print(''.join(unique_chars))

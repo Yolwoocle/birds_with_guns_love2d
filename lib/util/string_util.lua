@@ -118,9 +118,29 @@ function print_table(node)
 	print(table_to_str(node))
 end
 
+function repeat_string(string, amount)
+	local s = ""
+	for i=1, amount do
+		s = s..string
+	end
+	return s
+end
 
 function get_text_width(text, font)
 	local text = text or ' '
 	local font = font or love.graphics.getFont()
 	return font:getWidth(_parse_text(text))
+end
+
+function get_widest_string_size(strings, font)
+	local m = 0
+	for i=1, #strings do
+		m = max(m, get_text_width(strings[i], font))
+	end
+	return m
+end
+
+function get_text_height(text, font)
+	local font = font or love.graphics.getFont()
+	return font:getHeight(_parse_text(text))
 end

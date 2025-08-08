@@ -1,5 +1,6 @@
 local pico8 = require "pico8"
 local bit = require "bit"
+local utf8 = require "lib.utf8_fixes.utf8_fixes"
 require "util"
 
 -- pico-8 cartridge // http://www.pico-8.com
@@ -20,7 +21,7 @@ require "util"
 -- (nested comments no longer
 -- supported)
 
-VERSION = "1.0"
+VERSION = "0.1"
 
 function pico8._init()
 	degaplus = 0
@@ -785,7 +786,7 @@ function draw_player_ui(p)
 	else
 		color = 7
 	end
-	oprint("{stat_wagon} " .. wagon_n + 1 .. "/7", 46, 2, color, 1)
+	oprint(tostr(wagon_n + 1) .. "/7", 46, 2, color, 1)
 
 	love.graphics.pop()
 
@@ -2216,10 +2217,13 @@ function draw_main_menu(m)
 
 	-- buttons
 	local sel = m.buttons[m.sel]
+	local name = tr_text(sel.displayname) or sel.name
 	rectfill(
-		2, 93 + oy,
-		2 + #(tr_text(sel.displayname) or sel.name) * 8, 102 + oy, 1)
-	wide((tr_text(sel.displayname) or sel.name), 4, 95 + oy, 7)
+		2, 
+		102 + oy - get_lang_metadata().text_height - 2,
+		7 + get_text_width(name) + 4*(utf8.len(name)-1), 
+		102 + oy, 1)
+	wide(name, 5, 102 + oy - 6, 7)
 	palt()
 
 	-- encaged bird
@@ -2249,12 +2253,20 @@ function draw_main_menu(m)
 			1, i.sh)
 
 		if i.n == 13 and i.active then
-			-- rectfill(2, 12, 82, 58, 1)
-			darkrect(2, 12, 82, 60)
-			rect(    3, 13, 81, 59, 7)
-			oprint("{credits_game_by}", 6, 16, 14)
-			oprint("\nnINESLICED\nyOLWOOCLE\ngOUSPOURD\nnOTGOYOME\nsIMON t.\nV" .. VERSION, 6, 16)
-			oprint("\n\n{credits_code},{credits_art}\n{credits_code}\n{credits_code}\n{credits_music}", 47, 16, 13)
+			-- disgusting code. whatever
+			local str_names = {"nINESLICED", "yOLWOOCLE", "gOUSPOURD", "nOTGOYOME", "sIMON t.", "V" .. VERSION}
+			local str_roles = {"", "{credits_code},{credits_art}", "{credits_code}", "{credits_code}", "{credits_music}", ""}
+
+			local x2 = 47 + get_widest_string_size(str_roles) + 2
+			local y2 = 12 + get_lang_metadata().text_height * 7 + 5
+			darkrect(2, 12, x2 + 1, y2 + 1)
+			rect(3, 13, x2, y2, 7)
+			local txt_y1 = 14 + get_lang_metadata().menu_spacing
+			oprint("{credits_game_by}", 6, txt_y1, 14)
+			for i=1, #str_names do
+				oprint(str_names[i], 6,  txt_y1 + get_lang_metadata().text_height * i)
+				oprint(str_roles[i], 47, txt_y1 + get_lang_metadata().text_height * i, 13)
+			end
 		end
 	end
 	palt()
@@ -2313,16 +2325,21 @@ end
 
 function wide(t, x, y, col, pre)
 	--credit to yolwoocle uwu
-	t1 = "                ! #$%&'()  ,-./[12345[7[9:;<=>?([[c[efc[ij[l[[([([st[[[&yz[\\]'_`[[c[efc[ij[l[[([([st[[[&yz{|}~"
+	t1 =  "                ! #$%&'()  ,-./[12345[7[9:;<=>?([[c[efc[ij[l[[([([st[[[&yz[\\]'_`[[c[efc[ij[l[[([([st[[[&yz{|}~"
 	t2 = "                !\"=$  '()*+,-./0123]5678]:;<=>?@abcdefghijklmnopqrstuvwx]z[\\]^_`abcdefghijklmnopqrstuvwx]z{|} "
 	n1, n2 = "", ""
 	pre = pre or ""
 
-	for i = 1, #t do
-		local char = sub(t, i, i)
+	for i = 1, utf8.len(t) do
+		local char = utf8.sub(t, i, i)
 		local c = ord(char) - 16
-		n1 = n1 .. sub(t1, c, c) .. " "
-		n2 = n2 .. sub(t2, c, c) .. " "
+		if c <= utf8.len(t1) then
+			n1 = n1 .. utf8.sub(t1, c, c) .. " "
+			n2 = n2 .. utf8.sub(t2, c, c) .. " "
+		else
+			n1 = n1 .. char .. " "
+			n2 = n2 .. "  "
+		end
 	end
 
 	if (col ~= nil) then color(col) end
@@ -2412,7 +2429,7 @@ function update_drops()
 				end
 
 				make_ptc(
-					d.x + 4 - (#txt * 2),
+					d.x + 4 - (utf8.len(txt) * 2),
 					d.y + 4,
 					rnd(5) + 5, 7,
 					.98, 0, -0.3, txt
@@ -2517,7 +2534,7 @@ function update_death_menu(m)
 		local b = m.buttons[i]
 		local t = m.timer / 100
 
-		local ox = #b.t * 2
+		local ox = utf8.len(b.t) * 2
 		b.x = camx + 64 - ox
 			+ cos(t + i / 10) * 1.5
 		b.y = 1 / t + 80 + i * 15
@@ -2525,7 +2542,7 @@ function update_death_menu(m)
 
 		if touches_rect(mx, my,
 				b.x - 4, b.y - 4,
-				b.x + #b.t * 4 + 3, b.y + 9) then
+				b.x + utf8.len(b.t) * 4 + 3, b.y + 9) then
 			if (not b.active) then sfx(43) end
 			b.active = true
 			b.oy = 3

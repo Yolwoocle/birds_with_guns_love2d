@@ -13,17 +13,3 @@ function param(value, def_value)
 	end
 	return value
 end
-
-function repeat_string(string, amount)
-	local s = ""
-	for i=1, amount do
-		s = s..string
-	end
-	return s
-end
-
-function get_text_width(text, font)
-	text = text or ' '
-	font = font or love.graphics.getFont()
-	return font:getWidth(text)
-end

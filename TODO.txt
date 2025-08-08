@@ -8,7 +8,6 @@ Needed
 - localization: correctly support varying string lengths in the game (centered text, no overflow, etc)
 - localization: chinese and asian languages
 - to fix: weird texture bleed with bug enemies
-- to fix: pressing right on pause menu crashes the game
 - to fix: wide font broken
 
 Nice to have
@@ -19,6 +18,7 @@ Nice to have
 - translating
 
 Done
+- to fix: pressing right on pause menu crashes the game
 - options menu 
 - different locales
 - audio sounds are watered down // https://github.com/love2d/love/issues/2181

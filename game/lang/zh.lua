@@ -1,7 +1,14 @@
+-- TODO REMPLACE THESE TEMPORARY PLACEHOLDER MACHINE TRANSLATIONS INTO HUMAN ONES
 return {
+    ["$metadata"] = {
+        font = "simplified_chinese",
+        menu_spacing = 5,
+        text_height = 11,
+    },
     lang_en = "english", -- keep in original language
     lang_fr = "français", 
     lang_zh = "中文", 
+    lang_ja = "日本語",
 
     menu_back = "返回",
 

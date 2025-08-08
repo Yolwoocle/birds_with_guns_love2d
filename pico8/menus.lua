@@ -1,6 +1,7 @@
 local bit = require "bit"
 
-local _menu_line_spacing = 3
+local _default_menu_line_spacing = 2
+local _max_menu_line_spacing = 5
 local _menu_padding = 6
 local _menu_width = 82
 
@@ -25,6 +26,7 @@ function _new_menu(params)
 
     local menu = {}
     menu.items = {}
+    menu.override_line_spacing = params.override_line_spacing
 
     return menu
 end
@@ -118,7 +120,7 @@ function __reset_menus()
     __menus = {
         pause = _new_menu(),
         options = _new_menu(),
-        language = _new_menu(),
+        language = _new_menu({override_line_spacing = _max_menu_line_spacing}),
         quit_confirm = _new_menu(),
         controls = _new_menu(),
         controls_k_p1 = _new_menu(),
@@ -187,6 +189,10 @@ function __reset_menus()
     menuitem({ "language", 4 },
         lang_labeller("zh"),
         lang_setter("zh")
+    )
+    menuitem({ "language", 5 },
+        lang_labeller("ja"),
+        lang_setter("ja")
     )
 
     -- Controls
@@ -270,6 +276,13 @@ function _update_menus(dt)
     end
 end
 
+local function _get_menu_line_spacing()
+    if __current_menu and __current_menu.override_line_spacing then
+        return __current_menu.override_line_spacing
+    end
+    return (get_lang_metadata().menu_spacing or _default_menu_line_spacing)
+end
+
 local function _get_menu_height()
     if not __current_menu then
         return 0
@@ -277,9 +290,9 @@ local function _get_menu_height()
 
     local h = 0
     for i = 1, #__current_menu.items do
-        h = h + FONT_HEIGHT
+        h = h + BASE_TEXT_HEIGHT
         if i > 1 then
-            h = h + _menu_line_spacing
+            h = h + _get_menu_line_spacing()
         end
     end
     return h + 2 * _menu_padding
@@ -307,7 +320,7 @@ function _draw_menus()
             print_("▶", x0 + 4 + (selected and 1 or 0), y, 7)
         end
         print_(str, x0 + 11 + (selected and 1 or 0), y, 7)
-        y = y + FONT_HEIGHT + _menu_line_spacing
+        y = y + BASE_TEXT_HEIGHT + _get_menu_line_spacing(   )
     end
 end
 

@@ -19,8 +19,8 @@ function _load_p8scii()
         __p8scii_ord_to_chr[i] = string.char(i)
     end
 
-    for i=16, utf8.len(P8SCII_SYMBOLS)-1 do
-        local char = utf8.sub(P8SCII_SYMBOLS, i+1, i+1)
+    for i=16, utf8.len(P8SCII_EXTENDED_SYMBOLS)-1 do
+        local char = utf8.sub(P8SCII_EXTENDED_SYMBOLS, i+1, i+1)
         __p8scii_chr_to_ord[char] = i
         __p8scii_ord_to_chr[i] = char
     end
@@ -141,7 +141,7 @@ end
 --     end
 --         The ending index, counting from 1 at the left, or -1 at the right. (default -1)
 function sub(str, a, b)
-    return string.sub(str, a, b)
+    return utf8.sub(str, a, b)
 end
 
 --- tostr( val, [format_flags] )  

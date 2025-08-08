@@ -2,17 +2,19 @@
     Notes to translators:
 
     The screen is very small, so space is very limited. Prefer short phrases that work well in-context.
-    You can use gaming terms if they are already established ("checkpoint", "game over", etc) 
 --]]
 
 return {
     ["$metadata"] = {
-        font = "latin",
-        height = 5,
+        font = "normal",
+        menu_spacing = 2,
+        text_height = 6,
     },
+    -- Please do not translate these and keep them in their original language ("english", "français", etc)
     lang_en = "english", 
     lang_fr = "français", 
     lang_zh = "中文", 
+    lang_ja = "日本語",
 
     menu_back = "back",
 
@@ -80,8 +82,10 @@ return {
     gun_sniper = "sniper",
     gun_minigun = "minigun",
 
+    -- these will be used in phrases like "+10 ammo", "+2 health"
     stat_ammo = "ammo",
     stat_health = "health",
+    -- these will be used on the game over screen, like "kills: 34", "time: 12:34.5"
     stat_wagon = "wagon",
     stat_time = "time",
     stat_kills = "kills",

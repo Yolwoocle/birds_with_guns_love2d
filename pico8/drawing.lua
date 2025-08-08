@@ -182,6 +182,11 @@ function print_(_str, _x, _y, col)
     end
 
     _set_love_color(col)
+
+    __font = __font_normal
+    if get_lang_metadata().font then
+        __font = __fonts[get_lang_metadata().font] or __font_normal
+    end
     love.graphics.setFont(__font)
     __shader_pico8_draw:send("transparencyEnabled", false)
     love.graphics.print(_parse_text(_str), flr(x0), flr(y0))

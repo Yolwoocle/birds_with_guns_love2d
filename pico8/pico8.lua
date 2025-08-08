@@ -56,10 +56,21 @@ function pico8.init()
     __camera_y = 0
 
     _load_p8scii()
-    __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", P8SCII_SYMBOLS)
+    __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_NORMAL_CHARSET)
+    __font_simplified_chinese = love.graphics.newImageFont("pico8/assets/pico8_simplified_chinese_font.png", SIMPLIFIED_CHINESE_SYMBOLS)
+    __font_japanese = love.graphics.newImageFont("pico8/assets/pico8_japanese_font.png", JAPANESE_SYMBOLS)
+    __font_simplified_chinese:setFallbacks(__font_normal)
+    __font_japanese:setFallbacks(__font_normal)
+    __fonts = {
+        ["normal"] = __font_normal,
+        ["simplified_chinese"] = __font_simplified_chinese,
+        ["japanese"] = __font_japanese,
+    }
 
-    local font_height_ratio = FONT_HEIGHT/__font_normal:getHeight()
+    local font_height_ratio = 6/__font_normal:getHeight()
     __font_normal:setLineHeight(font_height_ratio)
+    __font_simplified_chinese:setLineHeight(font_height_ratio)
+    __font_japanese:setLineHeight(font_height_ratio)
     
     _init_pinball_font(font_height_ratio)
 
@@ -105,7 +116,6 @@ function pico8.init()
     love.graphics.setCanvas(canvastmp)
     love.graphics.clear()
     love.graphics.setColor(1, 1, 1, 1)
-    -- wide(FONT_SYMBOLS, 0, 0, 1)
     for i=12,127 do
         local c = sub(P8SCII_SYMBOLS, i, i)
         if i <= 127 then
