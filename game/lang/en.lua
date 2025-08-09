@@ -15,6 +15,8 @@ return {
     lang_fr = "français", 
     lang_zh = "中文", 
     lang_ja = "日本語",
+    lang_ja_Hrkt = "にほんこ゛",
+    lang_ko = "한국어",
 
     menu_back = "back",
 
@@ -33,7 +35,7 @@ return {
     menu_controls = "controls",
     menu_quit = "quit",
 
-    menu_sound_on = "sound",
+    menu_sound = "sound",
     menu_volume = "volume",
     menu_fullscreen = "fullscreen",
 
@@ -51,6 +53,7 @@ return {
     action_down = "down",
     action_shoot = "shoot",
     action_change_weapon = "change weapon",
+    action_weapon = "weapon",
 
     credits_game_by = "a game by:",
     credits_code = "code",

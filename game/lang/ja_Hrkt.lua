@@ -1,0 +1,93 @@
+return {
+    ["$metadata"] = {
+        font = "normal",
+        menu_spacing = 2,
+        text_height = 6,
+    },
+    -- Please do not translate these and keep them in their original language ("english", "français", etc)
+    lang_en = "english", 
+    lang_fr = "français", 
+    lang_zh = "中文", 
+    lang_ja = "日本語",
+    lang_ja_Hrkt = "にほんこ゛",
+    lang_ko = "한국어",
+
+    menu_back = "もと゛る",
+
+    menu_input_mode = "モート゛:",
+    menu_input_mode_keyboard = "キーホ゛ート゛",
+    menu_input_mode_mouse_keys = "マウス＋キー",
+    menu_input_mode_gamepad = "ケ゛ームハ゜ット゛",
+
+    menu_on = "オン",
+    menu_off = "オフ",
+
+    menu_continue = "つつ゛ける",
+    menu_restart = "さいかい",
+    menu_options = "せってい",
+    menu_language = "け゛んこ゛",
+    menu_controls = "そうさ",
+    menu_quit = "しゅうりょう",
+
+    menu_sound = "おんせい",
+    menu_volume = "おんりょう",
+    menu_fullscreen = "せ゛んか゛めん",
+
+    menu_main = "タイトル",
+    menu_main_random = "ランタ゛ム",
+
+    menu_retry = "リトライ",
+    menu_play_again = "もういちと゛",
+    menu_change_bird = "とりをかえる",
+
+    action_move = "いと゛う",
+    action_left = "ひた゛り",
+    action_right = "みき゛",
+    action_up = "うえ",
+    action_down = "した",
+    action_shoot = "こうけ゛き",
+    action_change_weapon = "ふ゛きへんこう",
+    action_weapon = "ふ゛き",
+
+    credits_game_by = "せいさく:",
+    credits_code = "コート゛",
+    credits_art = "アート",
+    credits_music = "おんか゛く",
+
+    bird_pigeon = "ハト",
+    bird_duck = "アヒル",
+    bird_sparrow = "スス゛メ",
+    bird_parrot = "オウム",
+    bird_toucan = "オオハシ",
+    bird_flamingo = "フラミンコ゛",
+    bird_eagle = "ワシ",
+    bird_seagull = "カモメ",
+    bird_ostrich = "タ゛チョウ",
+    bird_penguin = "ヘ゜ンキ゛ン",
+    bird_jay = "カケス",
+    bird_chicken = "ニワトリ",
+
+    gun_revolver = "リホ゛ルハ゛ー",
+    gun_firework_launcher = "はなひ゛ランチャー",
+    gun_boxing_glove = "ホ゛クシンク゛",
+    gun_bazooka = "ハ゛ス゛ーカ",
+    gun_flamethrower = "かえんほうしゃき",
+    gun_ring_cannon = "リンク゛ほう",
+    gun_shotgun = "ショットカ゛ン",
+    gun_machinegun = "マシンカ゛ン",
+    gun_assault_rifle = "アサルト",
+    gun_sniper = "スナイハ゜ー",
+    gun_minigun = "ミニカ゛ン",
+
+    stat_ammo = "た゛んやく",
+    stat_health = "たいりょく",
+    stat_wagon = "しゃりょう",
+    stat_time = "し゛かん",
+    stat_kills = "け゛きは",
+
+    game_no_ammo = "た゛んき゛れ!",
+    game_over = "ケ゛ームオーハ゛ー",
+    game_win = "おめて゛とう!",
+    game_win_subtext = "タイトルか゛めんて゛\n'i'をなか゛おして゛\nハート゛モート゛かいし゛ょ",
+    game_win_subtext_hard = "うそて゛しょ!?\nこのモート゛\nむりなはす゛た゛った!",
+}

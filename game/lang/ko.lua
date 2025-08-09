@@ -1,5 +1,4 @@
-import re
-lua_table='''--[[
+--[[
     Notes to translators:
 
     The screen is very small, so space is very limited. Prefer short phrases that work well in-context.
@@ -7,12 +6,16 @@ lua_table='''--[[
 
 return {
     ["$metadata"] = {
-        font = "normal",
-        menu_spacing = 2,
-        text_height = 6,
+        font = "korean",
+        menu_spacing = 5,
+        text_height = 11,
     },
     -- Please do not translate these and keep them in their original language ("english", "français", etc)
     lang_en = "english", 
+    lang_fr = "français", 
+    lang_zh = "中文", 
+    lang_ja = "日本語",
+    lang_ja_Hrkt = "にほんこ゛",
     lang_ko = "한국어",
 
     menu_back = "뒤로",
@@ -94,13 +97,3 @@ return {
     game_win_subtext = "'i' 버튼을\n타이틀 화면에서\n누르고 있으면\n하드 모드 해금!",
     game_win_subtext_hard = "진짜야?!\n이 모드는 원래\n불가능한 건데!",
 }
-
-'''
-chinese_chars = re.findall(r'[\u1100-\ufffff]', lua_table)
-unique_chars = []
-seen = set()
-for char in chinese_chars:
-    if char not in seen:
-        seen.add(char)
-        unique_chars.append(char)
-print(''.join(unique_chars))

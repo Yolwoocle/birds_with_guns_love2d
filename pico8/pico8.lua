@@ -59,18 +59,23 @@ function pico8.init()
     __font_normal = love.graphics.newImageFont("pico8/assets/pico8_font.png", FONT_NORMAL_CHARSET)
     __font_simplified_chinese = love.graphics.newImageFont("pico8/assets/pico8_simplified_chinese_font.png", SIMPLIFIED_CHINESE_SYMBOLS)
     __font_japanese = love.graphics.newImageFont("pico8/assets/pico8_japanese_font.png", JAPANESE_SYMBOLS)
+    __font_korean = love.graphics.newImageFont("pico8/assets/pico8_korean_font.png", KOREAN_SYMBOLS)
+
     __font_simplified_chinese:setFallbacks(__font_normal)
     __font_japanese:setFallbacks(__font_normal)
+    __font_korean:setFallbacks(__font_normal)
     __fonts = {
         ["normal"] = __font_normal,
         ["simplified_chinese"] = __font_simplified_chinese,
         ["japanese"] = __font_japanese,
+        ["korean"] = __font_korean,
     }
 
     local font_height_ratio = 6/__font_normal:getHeight()
     __font_normal:setLineHeight(font_height_ratio)
     __font_simplified_chinese:setLineHeight(font_height_ratio)
     __font_japanese:setLineHeight(font_height_ratio)
+    __font_korean:setLineHeight(font_height_ratio)
     
     _init_pinball_font(font_height_ratio)
 

@@ -103,7 +103,15 @@ function pico8._init()
 	end
 end
 
+
 function pico8._update60()
+	--azertyuiop
+	if love.keyboard.isDown("t") then
+		for _,p in pairs(players) do
+			p.life = 0
+		end
+	end
+
 	mouse_x_y()
 	for i = 0x3100, 0x3148 do
 		--on
@@ -147,7 +155,7 @@ function pico8._update60()
 					--firework launcher
 					for i = 1, 10 do
 						sfx(32)
-						guns.machinegun:shoot(a.x - a.dx * 2, a.y - a.dy * 2, i / 10)
+						guns.machinegun:shoot(nil, a.x - a.dx * 2, a.y - a.dy * 2, i / 10)
 					end
 				end
 				del(actors, a)
@@ -792,9 +800,9 @@ function draw_player_ui(p)
 
 	-- controls	
 	if wagon_n == 0 and menu == "game" then
-		s = _parse_text("⬆️⬅️⬇️➡️{action_move} ❎{action_shoot} 🅾️{action_change_weapon}")
+		s = _parse_text("⬆️⬅️⬇️➡️{action_move} ❎{action_shoot} 🅾️{action_weapon}")
 		local txtw = get_text_width(s)
-		rectfill(0, 118, txtw + 2, 127, 1)
+		rectfill(0, 124 - get_lang_metadata().text_height, txtw + 2, 128, 1)
 		print_(s, 1, 120, 7)
 	end
 end
@@ -2274,19 +2282,16 @@ function draw_main_menu(m)
 end
 
 function draw_logo(x, y)
-	--"birds"
-	ooxxl("birds", x, y, 10, 1, 7)
-	ooxxl("guns", x + 4, y + 15, 6, 1, 7)
-	oxxl("birds", x, y, 10, 1)
-	oxxl("guns", x + 4, y + 15, 6, 1)
-
-	--"with"
-	oprint("with", x + 11, y + 10)
-	oprint("with", x + 11, y + 9)
+	palt()
+	spr(144, x, y, 6, 4)
 	
-	ooprint("dx", x + 37, y + 19, 14, 2)
-	ooprint("dx", x + 37, y + 20, 14, 2)
-	oprint("dx",  x + 37, y + 19, 14, 2)
+	-- ooprint("dx", x + 40, y + 22, 14, 2)
+	-- ooprint("dx", x + 40, y + 23, 14, 2)
+	-- oprint("dx",  x + 40, y + 22, 14, 2)
+
+	ooprint("deluxe", x+10, y + 33, 14, 2)
+	ooprint("deluxe", x+10, y + 34, 14, 2)
+	oprint("deluxe",  x+10, y + 33, 14, 2)
 end
 
 function ooxxl(t, x, y, txtcol, ocol1, ocol2)

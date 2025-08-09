@@ -3,6 +3,8 @@ local languages = {
     fr = require "game.lang.fr",
     zh = require "game.lang.zh",
     ja = require "game.lang.ja",
+    ja_Hrkt = require "game.lang.ja_Hrkt",
+    ko = require "game.lang.ko",
 }
 
 function _init_lang()

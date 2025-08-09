@@ -9,6 +9,8 @@ return {
     lang_fr = "français", 
     lang_zh = "中文", 
     lang_ja = "日本語",
+    lang_ja_Hrkt = "にほんこ゛",
+    lang_ko = "한국어",
 
     menu_back = "返回",
 
@@ -27,7 +29,7 @@ return {
     menu_controls = "控制",
     menu_quit = "退出",
 
-    menu_sound_on = "音效",
+    menu_sound = "音效",
     menu_volume = "音量",
     menu_fullscreen = "全屏",
 
@@ -45,6 +47,7 @@ return {
     action_down = "下",
     action_shoot = "射击",
     action_change_weapon = "切换武器",
+    action_weapon = "武器",
 
     credits_game_by = "游戏制作：",
     credits_code = "编程",

@@ -77,16 +77,23 @@ JAPANESE_SYMBOLS =
     "ニバ花火ャクグ炎放射砲ガサナ弾薬体力車両時間破切れおめでと長押し解除嘘ょこの無理なは".. 
     "ずだった"
 
+KOREAN_SYMBOLS = 
+    "한국어뒤로모드키보마우스게임패켜짐꺼계속다시작옵션언조나가기소리음량전체화면타이틀랜".. 
+    "덤재도하새바꾸동왼쪽오른위아래발사무변경제코그픽악비둘참앵투칸플라밍고독수갈매펭귄치".. 
+    "닭볼버폭죽복싱글러브주카염방링캐논산탄총관돌격저미니건약력차간처없축해요튼을에서누르".. 
+    "있으금진짜야는원불능데"
+
 FONT_NORMAL_CHARSET = 
     P8SCII_SYMBOLS..
     LATIN_EXTENDED_SYMBOLS..
-    "中文日本語" -- characters to display correctly languages 
+    "中文日本語한국어" -- characters used in the language selection screen 
 
 P8SCII_EXTENDED_SYMBOLS = remove_repeats(
     P8SCII_SYMBOLS..
     LATIN_EXTENDED_SYMBOLS..
     SIMPLIFIED_CHINESE_SYMBOLS..
-    JAPANESE_SYMBOLS
+    JAPANESE_SYMBOLS..
+    KOREAN_SYMBOLS
 , 16)
 
 BASE_TEXT_HEIGHT = 6

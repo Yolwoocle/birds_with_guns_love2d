@@ -156,7 +156,7 @@ function __reset_menus()
         __menu_back()
     end))
     menuitem({ "options", 2 },
-        toggle_labeller("{menu_sound_on}", "sound_on"),
+        toggle_labeller("{menu_sound}", "sound_on"),
         toggle_setter("sound_on")
     )
     menuitem({ "options", 3 },
@@ -194,6 +194,14 @@ function __reset_menus()
         lang_labeller("ja"),
         lang_setter("ja")
     )
+    menuitem({ "language", 6 },
+        lang_labeller("ja_Hrkt"),
+        lang_setter("ja_Hrkt")
+    )
+    menuitem({ "language", 7 },
+        lang_labeller("ko"),
+        lang_setter("ko")
+    )
 
     -- Controls
     menuitem({"controls", 1}, "{menu_back}", on_click_callback(function()
@@ -226,7 +234,7 @@ function __reset_menus()
     end))
     menuitem({"controls_k_p1", 6}, "{action_shoot}: [x][v][n][mb1]", on_click_callback(function()
     end))
-    menuitem({"controls_k_p1", 7}, "{action_change_weapon}: [c][z][b][mb2]", on_click_callback(function()
+    menuitem({"controls_k_p1", 7}, "{action_weapon}: [c][z][b][mb2]", on_click_callback(function()
     end))
 end
 
