@@ -81,13 +81,7 @@ function pico8.init()
 
     __font = __font_normal
 
-    __input_state = {}
-    for btn_id, _ in pairs(BTN_MAP) do
-        __input_state[btn_id] = 0
-    end
-    _reset_input_state()
-    __standby_input_frames = 10
-
+    _init_input()
     _init_lang()
     _init_graphics()
     _load_sprite_flags()
@@ -211,7 +205,7 @@ function pico8._draw_debug()
         rectfill(0, 0, 32, 16, 0)
         print_(tostring(love.timer.getFPS()) .. "FPS", 0, 0, 7)
         print_(__input_state[BTN_PAUSE], 0, 0 + 6 * 1, 7)
-        print_(pico8._is_btn_down(BTN_PAUSE), 0, 0 + 6 * 2, 7)
+        print_(__is_btn_down(BTN_PAUSE), 0, 0 + 6 * 2, 7)
         print_(btn(BTN_PAUSE), 0, 0 + 6 * 3, 7)
     end
 end
@@ -223,10 +217,7 @@ function pico8.wheelmoved(x, y)
 end
 
 function pico8._engine_update(dt, is_30fps_frame)
-    if __standby_input_frames <= 0 then
-        pico8._update_input_state()
-    end
-    __standby_input_frames = __standby_input_frames - 1
+    __update_input_state()
 
     __mouse_wheel_state = __buffer_mouse_wheel_state
     __buffer_mouse_wheel_state = 0
@@ -237,42 +228,7 @@ function pico8._engine_update(dt, is_30fps_frame)
     if not __paused then
         _update_meta(dt)
     end
-end
-
-function pico8._is_btn_down(btn_id)
-    local keys = BTN_MAP[btn_id]
-    if not keys then
-        return false
-    end
-
-    for _, key in pairs(keys) do
-        if love.keyboard.isScancodeDown(key) then
-            return true
-        end
-    end
-    return false
-end
-
-function pico8._update_input_state()
-    for btn_id, _ in pairs(BTN_MAP) do
-        local pressed = pico8._is_btn_down(btn_id)
-        local old_state = __input_state[btn_id]
-        if old_state ~= nil then
-            if pressed then
-                if old_state == INPUT_STATE_OFF or old_state == INPUT_STATE_RELEASING then
-                    __input_state[btn_id] = INPUT_STATE_PRESSING
-                elseif old_state == INPUT_STATE_PRESSING then
-                    __input_state[btn_id] = INPUT_STATE_ON
-                end
-            else
-                if old_state == INPUT_STATE_RELEASING then
-                    __input_state[btn_id] = INPUT_STATE_OFF
-                elseif old_state == INPUT_STATE_ON or old_state == INPUT_STATE_PRESSING then
-                    __input_state[btn_id] = INPUT_STATE_RELEASING
-                end
-            end
-        end
-    end
+    __last_update_input()
 end
 
 function pico8._update_screen()
@@ -338,6 +294,7 @@ function pico8.keypressed(key, scancode, isrepeat)
     elseif key == "r" and love.keyboard.isDown("lctrl", "rctrl") then
         run()
     end
+    __on_keypressed(key, scancode, isrepeat)
 end
 
 -- CALLBACKS

@@ -8,7 +8,9 @@ Needed
 - localization: correctly support varying string lengths in the game (centered text, no overflow, etc)
 - localization: chinese and asian languages
 - to fix: weird texture bleed with bug enemies
-- to fix: wide font broken
+- to fix: wide font broken w non-english characters 
+- to fix: pinball font broken 
+- cyrillic?
 
 Nice to have
 - screenshotting
@@ -16,6 +18,7 @@ Nice to have
 - local co-op
 - online co-op?
 - translating
+- using menus with mouse
 
 Done
 - to fix: pressing right on pause menu crashes the game

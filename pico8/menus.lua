@@ -117,6 +117,24 @@ function __reset_menus()
         end
     end
 
+    local function controls_labeller(label, button_code, player_n)
+        return function()
+            local map = __btn_map[button_code]
+            local btns = ""
+            for i=1, #(map or {}) do
+                btns = btns.."{:"..map[i].."}"
+            end
+            return label .. ": ".. btns 
+        end
+    end
+
+    local function controls_setter(button_code, player_n)
+        return on_click_callback(function()
+            print("STARTSTANDBY")
+            __start_input_standby(button_code, player_n)
+        end)
+    end
+
     __menus = {
         pause = _new_menu(),
         options = _new_menu(),
@@ -220,22 +238,34 @@ function __reset_menus()
         _set_menu("controls_c_p2")
     end))
     
-    -- Controls keyboard P1
+    -- Controls keyboard P1 (player index 0)
     menuitem({"controls_k_p1", 1}, "{menu_back}", on_click_callback(function()
         __menu_back()
     end))
-    menuitem({"controls_k_p1", 2}, "{action_left}: [a]", on_click_callback(function()
-    end))
-    menuitem({"controls_k_p1", 3}, "{action_right}: [d]", on_click_callback(function()
-    end))
-    menuitem({"controls_k_p1", 4}, "{action_up}: [w]", on_click_callback(function()
-    end))
-    menuitem({"controls_k_p1", 5}, "{action_down}: [d]", on_click_callback(function()
-    end))
-    menuitem({"controls_k_p1", 6}, "{action_shoot}: [x][v][n][mb1]", on_click_callback(function()
-    end))
-    menuitem({"controls_k_p1", 7}, "{action_weapon}: [c][z][b][mb2]", on_click_callback(function()
-    end))
+    menuitem({"controls_k_p1", 2}, 
+        controls_labeller("{action_left}", BTN_LEFT, 0), 
+        controls_setter(BTN_LEFT, 0)
+    )
+    menuitem({"controls_k_p1", 3},  
+        controls_labeller("{action_right}", BTN_RIGHT, 0), 
+        controls_setter(BTN_RIGHT, 0)
+    )
+    menuitem({"controls_k_p1", 4},  
+        controls_labeller("{action_up}", BTN_UP, 0), 
+        controls_setter(BTN_UP, 0)
+    )
+    menuitem({"controls_k_p1", 5},  
+        controls_labeller("{action_down}", BTN_DOWN, 0), 
+        controls_setter(BTN_DOWN, 0)
+    )
+    menuitem({"controls_k_p1", 6},  
+        controls_labeller("{action_shoot}", BTN_X, 0), 
+        controls_setter(BTN_X, 0)
+    )
+    menuitem({"controls_k_p1", 7},  
+        controls_labeller("{action_weapon}", BTN_O, 0), 
+        controls_setter(BTN_O, 0)
+    )
 end
 
 local function _click_item()

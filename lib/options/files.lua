@@ -1,4 +1,4 @@
-local util = require "lib.options.util"
+require "lib.options.util"
 local Class = require "lib.options.class"
 
 local Files = Class:inherit()
@@ -16,9 +16,9 @@ function Files:parse_value(str_value, reference_value)
     elseif typ == "number" then
         val = tonumber(str_value)
     elseif typ == "boolean" then
-        val = util.strtobool(str_value)
+        val = strtobool(str_value)
     elseif typ == "table" then
-        val = util.split_str(str_value, ",") 
+        val = split_str(str_value, ",") 
         for index, subval in pairs(val) do
             val[index] = self:parse_value(subval, (reference_value[index] or reference_value[1]) or "")
         end
@@ -52,13 +52,13 @@ function Files:read_config_file(path, reference, create_if_missing)
 
     local text, size = file:read()
     if not text then    print("Files:read_config_file - Error reading '"..tostring(path).."' file: "..size)    end
-    local lines = util.split_str(text, "\n") -- Split lines
+    local lines = split_str(text, "\n") -- Split lines
 
     -- Read version
     local key, val = self:read_line(lines[1], reference, path)
     if (key ~= "$version") or (val ~= reference["$version"]) then
         -- Assuming incorrect version, resetting file
-        print(util.util.concat("Files:read_config_file - Incorrect file veresion (", tostring(val), ") for '", path, "', defaults will be loaded."))
+        print(concat("Files:read_config_file - Incorrect file veresion (", tostring(val), ") for '", path, "', defaults will be loaded."))
         self:write_config_file(path, reference)
         return copy_table_deep(reference)
     end
@@ -78,14 +78,19 @@ function Files:read_config_file(path, reference, create_if_missing)
 end
 
 function Files:read_line(line, reference, path)
-    local tab = util.split_str(line, ":")
-    local key, value = tab[1], tab[2]
+    local tab = split_str(line, ":")
+    local raw_key, raw_value = tab[1], tab[2]
 
-    if reference[key] ~= nil then
-        local val = self:parse_value(value, reference[key])
+    if reference[raw_key] ~= nil then
+        local key = raw_key -- Keys can be numbers or strings, this is a quick hack to check that
+        if reference[key] == nil then
+            key = tonum(key)
+        end
+        assert(key ~= nil, "Invalid key:"..tostring(raw_key))
+        local val = self:parse_value(raw_value, reference[key])
         return key, val
     else
-        print(util.concat("Files:read_line - Key error: key '",key,"' for '",path,"' does not exist"))
+        print(concat("Files:read_line - Key error: key '",raw_key,"' for '",path,"' does not exist"))
     end
 end
 
@@ -95,19 +100,19 @@ function Files:write_config_file(path, values)
     local file = love.filesystem.openFile(path, "w")
 
     if not values["$version"] then
-        print(util.concat("Files:write_config_file - no '$version' field defined, assuming version 1"))
+        print(concat("Files:write_config_file - no '$version' field defined, assuming version 1"))
         values["$version"] = 1
     end
-    local success, errmsg = file:write(util.concat("$version", ":", values["$version"], "\n"))
+    local success, errmsg = file:write(concat("$version", ":", values["$version"], "\n"))
 	
 	for key, value in pairs(values) do
         if key ~= "$version" then
             local string_val = value
             if type(value) == "number" then   string_val = tostring(value)   end
             if type(value) == "boolean" then  string_val = tostring(value)   end
-            if type(value) == "table" then    string_val = util.concatsep(value, ",")   end
+            if type(value) == "table" then    string_val = concatsep(value, ",")   end
     
-            local success, errmsg = file:write(util.concat(key, ":", string_val, "\n"))
+            local success, errmsg = file:write(concat(key, ":", string_val, "\n"))
         end
 	end
 	

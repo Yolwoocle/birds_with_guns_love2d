@@ -294,19 +294,34 @@ function isleft(a)
 	return a < .75 and .25 < a
 end
 
-function ospr(s, x, y, col)
+function ospr(s, x, y, col, w, h, flip_x, flip_y)
 	for i = 0, 15 do
 		pal(i, col)
 	end
 
 	for i = -1, 1 do
 		for j = -1, 1 do
-			spr(s, x + i, y + j)
+			spr(s, x + i, y + j, w, h, flip_x, flip_y)
 		end
 	end
 
 	pal()
-	spr(s, x, y)
+	spr(s, x, y, w, h, flip_x, flip_y)
+end
+
+
+function ospr_round(s, x, y, col, w, h, flip_x, flip_y)
+	for i = 0, 15 do
+		pal(i, col)
+	end
+
+	spr(s, x - 1, y + 0, w, h, flip_x, flip_y)
+	spr(s, x + 1, y + 0, w, h, flip_x, flip_y)
+	spr(s, x + 0, y - 1, w, h, flip_x, flip_y)
+	spr(s, x + 0, y + 1, w, h, flip_x, flip_y)
+
+	pal()
+	spr(s, x, y, w, h, flip_x, flip_y)
 end
 
 function ooprint(t, x, y, col, ocol1, ocol2)
@@ -794,7 +809,8 @@ function draw_player_ui(p)
 	else
 		color = 7
 	end
-	oprint(tostr(wagon_n + 1) .. "/7", 46, 2, color, 1)
+	spr(140, 50, 1, 2, 1)
+	oprint(tostr(wagon_n + 1) .. "/7", 67, 2, color, 1)
 
 	love.graphics.pop()
 

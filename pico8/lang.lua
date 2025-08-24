@@ -1,3 +1,5 @@
+local utf8 = require "lib.utf8_fixes.utf8_fixes"
+
 local languages = {
     en = require "game.lang.en",
     fr = require "game.lang.fr",
@@ -43,12 +45,19 @@ function tr_text(id)
 end
 
 function _parse_text(text)
-    text = text:gsub("{lbrace}", "\1"):gsub("{rbrace}", "\2")
+    text = text
+        :gsub("{lbrace}", "\1")
+        :gsub("{rbrace}", "\2")
     
     text = text:gsub("{(.-)}", function(key)
+        if utf8.len(key) > 0 and utf8.sub(key, 1, 1) == ":" then
+            return __get_key_display_string(utf8.sub(key, 2, -1))
+        end
         return tr_text(key)
     end)
 
-    text = text:gsub("\1", "{"):gsub("\2", "}")
+    text = text
+        :gsub("\1", "{")
+        :gsub("\2", "}")
     return text
 end
